@@ -72,7 +72,9 @@ namespace MsCrmTools.Iconator
 
         internal static void AddColor(EntityMetadata emd, Color color, IOrganizationService service)
         {
-            emd.EntityColor = ColorTranslator.ToHtml(color);
+            var sColor = string.Format("#{0}{1}{2}", color.R.ToString("X").PadLeft(2, '0'), color.G.ToString("X").PadLeft(2, '0'), color.B.ToString("X").PadLeft(2, '0'));
+
+            emd.EntityColor = sColor;
 
             var request = new UpdateEntityRequest { Entity = emd };
             service.Execute(request);

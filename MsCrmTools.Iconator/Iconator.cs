@@ -596,6 +596,8 @@ namespace MsCrmTools.Iconator
                         MetadataManager.AddColor(emd, color, Service);
                     }
 
+                    bw.ReportProgress(0, "Publishing entity");
+
                     MetadataManager.PublishEntities(emds.Select(emd=>emd.LogicalName).ToList(), Service);
                 },
                 PostWorkCallBack = evt =>
@@ -613,6 +615,10 @@ namespace MsCrmTools.Iconator
                         LvEntitiesSelectedIndexChanged(null, null);
                     }
                 },
+                ProgressChanged = evt =>
+                {
+                    SetWorkingMessage(evt.UserState.ToString());
+                }
             });
         }
 
