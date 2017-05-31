@@ -45,9 +45,9 @@
             this.gbMapping = new System.Windows.Forms.GroupBox();
             this.lvMappings = new System.Windows.Forms.ListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnUnmap = new System.Windows.Forms.Button();
             this.groupBoxCurrentIcon = new System.Windows.Forms.GroupBox();
             this.btnResetColor = new System.Windows.Forms.Button();
@@ -65,7 +65,6 @@
             this.mainMenu = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbConnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbAddIcon = new System.Windows.Forms.ToolStripButton();
             this.tsbOptimizeIcons = new System.Windows.Forms.ToolStripButton();
@@ -75,6 +74,9 @@
             this.tsbToggleBackground = new System.Windows.Forms.ToolStripButton();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog = new System.Windows.Forms.ColorDialog();
+            this.tsbLoad = new System.Windows.Forms.ToolStripDropDownButton();
+            this.loadFromASolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -182,6 +184,7 @@
             // 
             // listViewWebRessources32
             // 
+            this.listViewWebRessources32.BackColor = System.Drawing.Color.Black;
             this.listViewWebRessources32.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewWebRessources32.HideSelection = false;
             this.listViewWebRessources32.Location = new System.Drawing.Point(3, 3);
@@ -258,7 +261,7 @@
             this.gbMapping.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbMapping.Name = "gbMapping";
             this.gbMapping.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbMapping.Size = new System.Drawing.Size(864, 357);
+            this.gbMapping.Size = new System.Drawing.Size(864, 355);
             this.gbMapping.TabIndex = 8;
             this.gbMapping.TabStop = false;
             this.gbMapping.Text = "Mapping";
@@ -278,7 +281,7 @@
             this.lvMappings.Location = new System.Drawing.Point(8, 28);
             this.lvMappings.MultiSelect = false;
             this.lvMappings.Name = "lvMappings";
-            this.lvMappings.Size = new System.Drawing.Size(840, 327);
+            this.lvMappings.Size = new System.Drawing.Size(840, 325);
             this.lvMappings.TabIndex = 3;
             this.lvMappings.UseCompatibleStateImageBehavior = false;
             this.lvMappings.View = System.Windows.Forms.View.Details;
@@ -287,6 +290,11 @@
             // 
             this.columnHeader3.Text = "Entity";
             this.columnHeader3.Width = 120;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Logical name";
+            this.columnHeader6.Width = 120;
             // 
             // columnHeader4
             // 
@@ -297,11 +305,6 @@
             // 
             this.columnHeader5.Text = "Image Web resources";
             this.columnHeader5.Width = 240;
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "Logical name";
-            this.columnHeader6.Width = 120;
             // 
             // btnUnmap
             // 
@@ -472,7 +475,7 @@
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbCloseThisTab,
             this.toolStripSeparator3,
-            this.tsbConnect,
+            this.tsbLoad,
             this.toolStripSeparator1,
             this.tsbAddIcon,
             this.tsbOptimizeIcons,
@@ -502,15 +505,6 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 38);
             // 
-            // tsbConnect
-            // 
-            this.tsbConnect.Image = ((System.Drawing.Image)(resources.GetObject("tsbConnect.Image")));
-            this.tsbConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbConnect.Name = "tsbConnect";
-            this.tsbConnect.Size = new System.Drawing.Size(238, 35);
-            this.tsbConnect.Text = "Load Entities and Images";
-            this.tsbConnect.Click += new System.EventHandler(this.TsbConnectClick);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -532,7 +526,7 @@
             this.tsbOptimizeIcons.Image = ((System.Drawing.Image)(resources.GetObject("tsbOptimizeIcons.Image")));
             this.tsbOptimizeIcons.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOptimizeIcons.Name = "tsbOptimizeIcons";
-            this.tsbOptimizeIcons.Size = new System.Drawing.Size(227, 35);
+            this.tsbOptimizeIcons.Size = new System.Drawing.Size(228, 35);
             this.tsbOptimizeIcons.Text = "Optimize 32x32 Images";
             this.tsbOptimizeIcons.Click += new System.EventHandler(this.tsbOptimizeIcons_Click);
             // 
@@ -572,6 +566,30 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "IconDefault16.png");
             this.imageList1.Images.SetKeyName(1, "IconDefault32.png");
+            // 
+            // tsbLoad
+            // 
+            this.tsbLoad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadAllToolStripMenuItem,
+            this.loadFromASolutionToolStripMenuItem});
+            this.tsbLoad.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoad.Image")));
+            this.tsbLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbLoad.Name = "tsbLoad";
+            this.tsbLoad.Size = new System.Drawing.Size(252, 35);
+            this.tsbLoad.Text = "Load Entities and Images";
+            this.tsbLoad.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsbLoad_DropDownItemClicked);
+            // 
+            // loadFromASolutionToolStripMenuItem
+            // 
+            this.loadFromASolutionToolStripMenuItem.Name = "loadFromASolutionToolStripMenuItem";
+            this.loadFromASolutionToolStripMenuItem.Size = new System.Drawing.Size(263, 30);
+            this.loadFromASolutionToolStripMenuItem.Text = "Load from a solution";
+            // 
+            // loadAllToolStripMenuItem
+            // 
+            this.loadAllToolStripMenuItem.Name = "loadAllToolStripMenuItem";
+            this.loadAllToolStripMenuItem.Size = new System.Drawing.Size(263, 30);
+            this.loadAllToolStripMenuItem.Text = "Load All";
             // 
             // Iconator
             // 
@@ -638,7 +656,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ToolStrip mainMenu;
-        private System.Windows.Forms.ToolStripButton tsbConnect;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tsbAddIcon;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -654,5 +671,8 @@
         private System.Windows.Forms.ColorDialog colorDialog;
         private System.Windows.Forms.Button btnApplyColorChange;
         private System.Windows.Forms.Button btnResetColor;
+        private System.Windows.Forms.ToolStripDropDownButton tsbLoad;
+        private System.Windows.Forms.ToolStripMenuItem loadFromASolutionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadAllToolStripMenuItem;
     }
 }

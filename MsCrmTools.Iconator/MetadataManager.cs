@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Drawing;
+using Microsoft.Xrm.Sdk.Metadata.Query;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace MsCrmTools.Iconator
 {
@@ -47,18 +49,89 @@ namespace MsCrmTools.Iconator
         /// Recupere la liste des EntityMetadata presente dans la CRM
         /// </summary>
         /// <param name="service">CRM Service</param>
+        /// <param name="solutionId"></param>
         /// <returns>Liste des entites retrouvees</returns>
-        public static List<EntityMetadata> GetEntitiesList(IOrganizationService service)
+        public static List<EntityMetadata> GetEntitiesList(IOrganizationService service, Guid solutionId)
         {
-            var req = new RetrieveAllEntitiesRequest
+            if (solutionId != Guid.Empty)
             {
-                EntityFilters = EntityFilters.Entity
+                var qba = new QueryByAttribute("solutioncomponent") { ColumnSet = new ColumnSet(true) };
+                qba.Attributes.AddRange("solutionid", "componenttype");
+                qba.Values.AddRange(solutionId, 1);
+
+                var components = service.RetrieveMultiple(qba).Entities;
+
+                var list = components.Select(component => component.GetAttributeValue<Guid>("objectid"))
+                    .ToList();
+
+                if (list.Count > 0)
+                {
+
+                    EntityQueryExpression entityQueryExpression = new EntityQueryExpression()
+                    {
+                        Criteria = new MetadataFilterExpression
+                        {
+                            Conditions =
+                            {
+                                new MetadataConditionExpression("MetadataId", MetadataConditionOperator.In,
+                                    list.ToArray()),
+                                new MetadataConditionExpression("IsCustomEntity", MetadataConditionOperator.Equals, true)
+                            }
+                        },
+                        Properties = new MetadataPropertiesExpression
+                        {
+                            AllProperties = false,
+                            PropertyNames =
+                            {
+                                "DisplayName",
+                                "LogicalName",
+                                "EntityColor",
+                                "IconSmallName",
+                                "IconMediumName",
+                                "IconLargeName"
+                            }
+                        }
+                    };
+
+                    RetrieveMetadataChangesRequest retrieveMetadataChangesRequest = new RetrieveMetadataChangesRequest
+                    {
+                        Query = entityQueryExpression,
+                        ClientVersionStamp = null
+                    };
+
+                    var response = (RetrieveMetadataChangesResponse)service.Execute(retrieveMetadataChangesRequest);
+
+                    return response.EntityMetadata.ToList();
+                }
+
+                return new List<EntityMetadata>();
+            }
+
+            EntityQueryExpression entityQueryExpressionFull = new EntityQueryExpression()
+            {
+                Criteria = new MetadataFilterExpression
+                {
+                    Conditions =
+                            {
+                                new MetadataConditionExpression("IsCustomEntity", MetadataConditionOperator.Equals, true)
+                            }
+                },
+                Properties = new MetadataPropertiesExpression
+                {
+                    AllProperties = false,
+                    PropertyNames = { "DisplayName", "LogicalName", "EntityColor", "IconSmallName", "IconMediumName", "IconLargeName" }
+                }
             };
 
-            var resp = (RetrieveAllEntitiesResponse)service.Execute(req);
-            //resp.EntityMetadata[0].icon
+            RetrieveMetadataChangesRequest request = new RetrieveMetadataChangesRequest
+            {
+                Query = entityQueryExpressionFull,
+                ClientVersionStamp = null
+            };
 
-            return resp.EntityMetadata.Where(ent => ent.IsCustomEntity != null && (ent.DisplayName.UserLocalizedLabel != null && ent.IsCustomEntity.Value)).ToList();
+            var fullResponse = (RetrieveMetadataChangesResponse)service.Execute(request);
+
+            return fullResponse.EntityMetadata.Where(e => e.DisplayName?.UserLocalizedLabel != null).ToList();
         }
 
         public static void ResetIcons(EntityMetadata emd, IOrganizationService service)

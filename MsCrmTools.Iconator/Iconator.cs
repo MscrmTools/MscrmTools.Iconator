@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 using McTools.Xrm.Connection;
@@ -185,23 +186,34 @@ namespace MsCrmTools.Iconator
 
         #region Main menu actions
 
-        private void DoAction()
+        private void DoAction(bool fromSolution)
         {
             listViewEntities.Items.Clear();
             listViewWebRessources16.Items.Clear();
             listViewWebRessources32.Items.Clear();
             listViewWebRessourcesOther.Items.Clear();
 
+            var solutionId = Guid.Empty;
+
+            if (fromSolution)
+            {
+                var sPicker = new SolutionPicker(Service);
+                if (sPicker.ShowDialog(ParentForm) == DialogResult.OK)
+                {
+                    solutionId = sPicker.SelectedSolution.Id;
+                }
+            }
+
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Loading Entities...",
-                AsyncArgument = null,
+                AsyncArgument = solutionId,
                 Work = (bw, e) =>
                 {
                     var cc = new CrmComponents();
 
                     // Display retrieved entities
-                    var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service)
+                    var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionId)
                                         orderby entityList.DisplayName.UserLocalizedLabel.Label
                                         select entityList;
 
@@ -215,7 +227,7 @@ namespace MsCrmTools.Iconator
                     bw.ReportProgress(0, "Loading Web resources...");
 
                     var queryWebResources =
-                        from webResourceList in WebResourcesManager.GetWebResourcesOnSolution(Service).Entities
+                        from webResourceList in WebResourcesManager.GetWebResourcesOnSolution(Service, solutionId).Entities
                         orderby webResourceList.GetAttributeValue<string>("name")
                         select webResourceList;
 
@@ -310,6 +322,28 @@ namespace MsCrmTools.Iconator
                         listViewWebRessources16.Items.AddRange(cc.Icons16.ToArray());
                         listViewWebRessources32.Items.AddRange(cc.Icons32.ToArray());
                         listViewWebRessourcesOther.Items.AddRange(cc.IconsOthers.ToArray());
+
+                        StringBuilder message = new StringBuilder();
+
+                        if (cc.Entities.Count == 0)
+                        {
+                            message.Append(
+                                "No custom entities have been found. ");
+                        }
+
+                        if (cc.Icons16.Count == 0 && cc.Icons32.Count == 0 && cc.IconsOthers.Count == 0)
+                        {
+                            message.Append(
+                                "No images have been found. ");
+                        }
+
+                        if (message.Length > 0)
+                        {
+                            message.Append(
+                                "If you selected a solution, add the missing components in it. If not, create custom entities or images");
+                            
+                            ShowWarningNotification(message.ToString(), null);
+                        }
                     }
                     tsbAddIcon.Enabled = true;
                     tsbApply.Enabled = true;
@@ -381,7 +415,7 @@ namespace MsCrmTools.Iconator
 
         private void TsbConnectClick(object sender, EventArgs e)
         {
-            ExecuteMethod(DoAction);
+            ExecuteMethod(DoAction, false);
         }
 
         #region Apply Images to entities
@@ -740,6 +774,18 @@ namespace MsCrmTools.Iconator
             var list = (ListView)sender;
             list.Sorting = list.Sorting == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
             list.ListViewItemSorter = new ListViewItemComparer(e.Column, list.Sorting);
+        }
+
+        private void tsbLoad_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == loadFromASolutionToolStripMenuItem)
+            {
+                ExecuteMethod(DoAction, true);
+            }
+            else
+            {
+                ExecuteMethod(DoAction, false);
+            }
         }
     }
 }
