@@ -14,16 +14,16 @@ namespace MsCrmTools.Iconator.UserControls
 {
     public partial class ImageOptimizerControl : UserControl
     {
-        Image originalImage;
-        Image optimizedImage;
-        Entity webResource;
+        private Image originalImage;
+        private Image optimizedImage;
+        private Entity webResource;
 
         public ImageOptimizerControl(Entity webResource)
         {
             InitializeComponent();
 
             this.webResource = webResource;
-            originalImage = ImageHelper.ConvertWebResContent(webResource.GetAttributeValue<string>("content"));
+            originalImage = ImageHelper.ConvertWebResContent(webResource.GetAttributeValue<string>("content"), false);
 
             pbOriginalImage.Image = originalImage;
 
@@ -61,11 +61,11 @@ namespace MsCrmTools.Iconator.UserControls
         public bool Checked { get { return chkSelected.Checked; } }
         public Image OriginalImage { get { return originalImage; } }
         public Image OptimizedImage { get { return optimizedImage; } }
-        public Entity WebResource{ get { return webResource; } }
+        public Entity WebResource { get { return webResource; } }
 
         public void SetPanelBackgroundImage(Color color)
         {
-            BackColor = color;   
+            BackColor = color;
         }
 
         public void SetIconBackgroundImage(Color color)
