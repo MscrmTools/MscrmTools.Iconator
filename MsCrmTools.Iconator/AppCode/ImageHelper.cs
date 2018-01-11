@@ -7,6 +7,8 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Text;
+using Svg;
 
 namespace MsCrmTools.Iconator.AppCode
 {
@@ -16,21 +18,36 @@ namespace MsCrmTools.Iconator.AppCode
         /// Convert a WebResource to Image displayable into listviews
         /// </summary>
         /// <param name="contentImageList">Base 64 code</param>
+        /// <param name="isVector">Is Vector image</param>
         /// <returns>Image</returns>
-        public static Image ConvertWebResContent(string contentImageList)
+        public static Image ConvertWebResContent(string contentImageList, bool isVector)
         {
             try
             {
                 var imageBytes = Convert.FromBase64String(contentImageList);
-                var ms = new MemoryStream(imageBytes);
 
-                var im = Image.FromStream(ms, true, true);
+                using (MemoryStream ms = new MemoryStream(imageBytes))
+                {
+                    using (StreamReader reader = new StreamReader(ms))
+                    {
+                        if (isVector)
+                        {
+                            using (var xmlStream = new MemoryStream(Encoding.Default.GetBytes(reader.ReadToEnd())))
+                            {
+                                xmlStream.Position = 0;
+                                SvgDocument svgDoc = SvgDocument.Open<SvgDocument>(xmlStream);
 
-                return im;
+                                return new Bitmap(svgDoc.Draw(48, 48), new Size(48, 48));
+                            }
+                        }
+
+                        return Image.FromStream(ms, true, true);
+                    }
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Error on ConvertWebResContent method : {0}", ex.InnerException.Message));
+                throw new Exception($"Error on ConvertWebResContent method : {ex.InnerException?.Message ?? ex.Message}");
             }
         }
 

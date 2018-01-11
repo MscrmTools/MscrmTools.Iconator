@@ -27,9 +27,13 @@ namespace MsCrmTools.Iconator
                 {
                     mapping.Entity.IconSmallName = mapping.WebResourceName;
                 }
-                else
+                else if (mapping.ImageSize == 32)
                 {
                     mapping.Entity.IconMediumName = mapping.WebResourceName;
+                }
+                else
+                {
+                    mapping.Entity.IconVectorName = mapping.WebResourceName;
                 }
 
                 var request = new UpdateEntityRequest { Entity = mapping.Entity };
@@ -50,8 +54,9 @@ namespace MsCrmTools.Iconator
         /// </summary>
         /// <param name="service">CRM Service</param>
         /// <param name="solutionId"></param>
+        /// <param name="majorVersion"></param>
         /// <returns>Liste des entites retrouvees</returns>
-        public static List<EntityMetadata> GetEntitiesList(IOrganizationService service, Guid solutionId)
+        public static List<EntityMetadata> GetEntitiesList(IOrganizationService service, Guid solutionId, int majorVersion)
         {
             if (solutionId != Guid.Empty)
             {
@@ -66,7 +71,6 @@ namespace MsCrmTools.Iconator
 
                 if (list.Count > 0)
                 {
-
                     EntityQueryExpression entityQueryExpression = new EntityQueryExpression()
                     {
                         Criteria = new MetadataFilterExpression
@@ -87,11 +91,15 @@ namespace MsCrmTools.Iconator
                                 "LogicalName",
                                 "EntityColor",
                                 "IconSmallName",
-                                "IconMediumName",
-                                "IconLargeName"
+                                "IconMediumName"
                             }
                         }
                     };
+
+                    if (majorVersion >= 9)
+                    {
+                        entityQueryExpression.Properties.PropertyNames.Add("IconVectorName");
+                    }
 
                     RetrieveMetadataChangesRequest retrieveMetadataChangesRequest = new RetrieveMetadataChangesRequest
                     {
@@ -119,9 +127,14 @@ namespace MsCrmTools.Iconator
                 Properties = new MetadataPropertiesExpression
                 {
                     AllProperties = false,
-                    PropertyNames = { "DisplayName", "LogicalName", "EntityColor", "IconSmallName", "IconMediumName", "IconLargeName" }
+                    PropertyNames = { "DisplayName", "LogicalName", "EntityColor", "IconSmallName", "IconMediumName" }
                 }
             };
+
+            if (majorVersion >= 9)
+            {
+                entityQueryExpressionFull.Properties.PropertyNames.Add("IconVectorName");
+            }
 
             RetrieveMetadataChangesRequest request = new RetrieveMetadataChangesRequest
             {
@@ -139,6 +152,7 @@ namespace MsCrmTools.Iconator
             emd.IconSmallName = "";
             emd.IconMediumName = "";
             emd.IconLargeName = "";
+            emd.IconVectorName = "";
             var request = new UpdateEntityRequest { Entity = emd };
             service.Execute(request);
         }
@@ -151,13 +165,12 @@ namespace MsCrmTools.Iconator
 
             var request = new UpdateEntityRequest { Entity = emd };
             service.Execute(request);
-
         }
 
         internal static void PublishEntities(List<string> entities, IOrganizationService service)
         {
             string parameterXml = string.Format("<importexportxml><entities>{0}</entities></importexportxml>",
-                                                string.Join("",entities.Select(e => "<entity>" + e + "</entity>")));
+                                                string.Join("", entities.Select(e => "<entity>" + e + "</entity>")));
 
             var publishRequest = new PublishXmlRequest { ParameterXml = parameterXml };
             service.Execute(publishRequest);

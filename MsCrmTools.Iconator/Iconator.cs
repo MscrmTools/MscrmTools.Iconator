@@ -10,11 +10,13 @@ using MsCrmTools.Iconator.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 using McTools.Xrm.Connection;
+using Svg;
 using XrmToolBox.Extensibility.Interfaces;
 
 namespace MsCrmTools.Iconator
@@ -74,15 +76,31 @@ namespace MsCrmTools.Iconator
             if (!((detail.OrganizationMajorVersion == 7 && detail.OrganizationMinorVersion >= 1)
                 || detail.OrganizationMajorVersion > 7))
             {
-                btnApplyColorChange.Enabled = false;
                 btnChangeColor.Enabled = false;
                 btnResetColor.Enabled = false;
             }
             else
             {
-                btnApplyColorChange.Enabled = true;
                 btnChangeColor.Enabled = true;
                 btnResetColor.Enabled = true;
+            }
+
+            if (detail.OrganizationMajorVersion < 9)
+            {
+                pbVector.Visible = false;
+                lblVectorLabel.Visible = false;
+
+                tabControlWebResource.TabPages.Remove(tabPageVector);
+            }
+            else
+            {
+                pbVector.Visible = true;
+                lblVectorLabel.Visible = true;
+
+                if (tabControlWebResource.TabPages.Count == 3)
+                {
+                    tabControlWebResource.TabPages.Insert(2, tabPageVector);
+                }
             }
 
             if (detail.OrganizationMajorVersion >= 6)
@@ -99,6 +117,17 @@ namespace MsCrmTools.Iconator
         {
             SetOrganizationVersionSpecificItems(detail);
 
+            listViewEntities.Items.Clear();
+            listViewWebRessources16.Items.Clear();
+            listViewWebRessources32.Items.Clear();
+            listViewWebRessourcesOther.Items.Clear();
+            lvVectorWebresources.Items.Clear();
+            webResourceRetrivedList.Clear();
+
+            pictureBox16.Image = imageList1.Images[0];
+            pictureBox32.Image = imageList1.Images[1];
+            pbVector.Image = imageList1.Images[2];
+
             base.UpdateConnection(newService, detail, actionName, parameter);
         }
 
@@ -110,7 +139,7 @@ namespace MsCrmTools.Iconator
         {
             if (listViewEntities.SelectedItems.Count > 0)
             {
-                if(listViewEntities.SelectedItems.Count > 1)
+                if (listViewEntities.SelectedItems.Count > 1)
                 {
                     groupBoxCurrentIcon.Text = "Current icons (first selected entity only)";
                 }
@@ -129,7 +158,7 @@ namespace MsCrmTools.Iconator
 
                     foreach (var entityWrS in queryWrSmall)
                     {
-                        pictureBox16.Image = ImageHelper.ConvertWebResContent(entityWrS.Attributes["content"].ToString());
+                        pictureBox16.Image = ImageHelper.ConvertWebResContent(entityWrS.Attributes["content"].ToString(), false);
                     }
                 }
                 else
@@ -145,12 +174,28 @@ namespace MsCrmTools.Iconator
 
                     foreach (var entityM in queryMedium)
                     {
-                        pictureBox32.Image = ImageHelper.ConvertWebResContent(entityM.Attributes["content"].ToString());
+                        pictureBox32.Image = ImageHelper.ConvertWebResContent(entityM.Attributes["content"].ToString(), false);
                     }
                 }
                 else
                 {
                     pictureBox32.Image = imageList1.Images[1];
+                }
+
+                if (!string.IsNullOrEmpty(entity.IconVectorName))
+                {
+                    var queryMedium = from wrList in webResourceRetrivedList
+                                      where (string)wrList["name"] == entity.IconVectorName
+                                      select wrList;
+
+                    foreach (var entityM in queryMedium)
+                    {
+                        pbVector.Image = ImageHelper.ConvertWebResContent(entityM.Attributes["content"].ToString(), true);
+                    }
+                }
+                else
+                {
+                    pbVector.Image = imageList1.Images[2];
                 }
 
                 if (string.IsNullOrEmpty(entity.EntityColor))
@@ -192,6 +237,7 @@ namespace MsCrmTools.Iconator
             listViewWebRessources16.Items.Clear();
             listViewWebRessources32.Items.Clear();
             listViewWebRessourcesOther.Items.Clear();
+            lvVectorWebresources.Items.Clear();
 
             var solutionId = Guid.Empty;
 
@@ -213,7 +259,7 @@ namespace MsCrmTools.Iconator
                     var cc = new CrmComponents();
 
                     // Display retrieved entities
-                    var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionId)
+                    var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionId, ConnectionDetail.OrganizationMajorVersion)
                                         orderby entityList.DisplayName.UserLocalizedLabel.Label
                                         select entityList;
 
@@ -235,8 +281,27 @@ namespace MsCrmTools.Iconator
                     {
                         try
                         {
+                            // Specific processing for vector images
+                            if (webResource.GetAttributeValue<OptionSetValue>("webresourcetype").Value == 11)
+                            {
+                                var svg =
+                                    ImageHelper.ConvertWebResContent(webResource.GetAttributeValue<string>("content"), true);
+
+                                var lvi = new ListViewItem(webResource.GetAttributeValue<string>("name"))
+                                {
+                                    Tag = webResource,
+                                    ImageIndex = cc.ImagesVector.Count
+                                };
+                                cc.IconsVector.Add(lvi);
+                                cc.ImagesVector.Add(svg);
+
+                                webResourceRetrivedList.Add(webResource);
+
+                                continue;
+                            }
+
                             var imageConverted =
-                                ImageHelper.ConvertWebResContent(webResource.GetAttributeValue<string>("content"));
+                                ImageHelper.ConvertWebResContent(webResource.GetAttributeValue<string>("content"), false);
 
                             if (imageConverted == null)
                                 continue;
@@ -308,20 +373,24 @@ namespace MsCrmTools.Iconator
                             ImageSize = new Size(32, 32),
                             ColorDepth = ColorDepth.Depth32Bit
                         };
-                        var imageListOther = new ImageList { ColorDepth = ColorDepth.Depth32Bit };
+                        var imageListOther = new ImageList { ImageSize = new Size(32, 32), ColorDepth = ColorDepth.Depth32Bit };
+                        var imageListVector = new ImageList { ImageSize = new Size(48, 48), ColorDepth = ColorDepth.Depth32Bit };
 
                         imageList16.Images.AddRange(cc.Images16.ToArray());
                         imageList32.Images.AddRange(cc.Images32.ToArray());
                         imageListOther.Images.AddRange(cc.ImagesOthers.ToArray());
+                        imageListVector.Images.AddRange(cc.ImagesVector.ToArray());
 
                         listViewWebRessources16.LargeImageList = imageList16;
                         listViewWebRessources32.LargeImageList = imageList32;
                         listViewWebRessourcesOther.LargeImageList = imageListOther;
+                        lvVectorWebresources.LargeImageList = imageListVector;
 
                         listViewEntities.Items.AddRange(cc.Entities.ToArray());
                         listViewWebRessources16.Items.AddRange(cc.Icons16.ToArray());
                         listViewWebRessources32.Items.AddRange(cc.Icons32.ToArray());
                         listViewWebRessourcesOther.Items.AddRange(cc.IconsOthers.ToArray());
+                        lvVectorWebresources.Items.AddRange(cc.IconsVector.ToArray());
 
                         StringBuilder message = new StringBuilder();
 
@@ -331,7 +400,7 @@ namespace MsCrmTools.Iconator
                                 "No custom entities have been found. ");
                         }
 
-                        if (cc.Icons16.Count == 0 && cc.Icons32.Count == 0 && cc.IconsOthers.Count == 0)
+                        if (cc.Icons16.Count == 0 && cc.Icons32.Count == 0 && cc.IconsOthers.Count == 0 && cc.IconsVector.Count == 0)
                         {
                             message.Append(
                                 "No images have been found. ");
@@ -341,7 +410,7 @@ namespace MsCrmTools.Iconator
                         {
                             message.Append(
                                 "If you selected a solution, add the missing components in it. If not, create custom entities or images");
-                            
+
                             ShowWarningNotification(message.ToString(), null);
                         }
                     }
@@ -364,10 +433,29 @@ namespace MsCrmTools.Iconator
                 var imageList16 = listViewWebRessources16.LargeImageList;
                 var imageList32 = listViewWebRessources32.LargeImageList;
                 var imageListOther = listViewWebRessourcesOther.LargeImageList;
+                var imageListVector = lvVectorWebresources.LargeImageList;
 
                 foreach (var webResource in icForm.WebResourcesCreated)
                 {
-                    var imageConverted = ImageHelper.ConvertWebResContent(webResource.Attributes["content"].ToString());
+                    // Specific processing for vector images
+                    if (webResource.GetAttributeValue<OptionSetValue>("webresourcetype").Value == 11)
+                    {
+                        Image svg = ImageHelper.ConvertWebResContent(webResource.Attributes["content"].ToString(), true);
+
+                        var lvi = new ListViewItem(webResource.GetAttributeValue<string>("name"))
+                        {
+                            Tag = webResource,
+                            ImageIndex = imageListVector.Images.Count
+                        };
+                        lvVectorWebresources.Items.Add(lvi);
+                        imageListVector.Images.Add(svg);
+
+                        webResourceRetrivedList.Add(webResource);
+
+                        continue;
+                    }
+
+                    var imageConverted = ImageHelper.ConvertWebResContent(webResource.Attributes["content"].ToString(), false);
 
                     if (imageConverted.Size.Height == 32 && imageConverted.Size.Width == 32)
                     {
@@ -410,6 +498,7 @@ namespace MsCrmTools.Iconator
                 listViewWebRessources32.LargeImageList = imageList32;
                 listViewWebRessources16.LargeImageList = imageList16;
                 listViewWebRessourcesOther.LargeImageList = imageListOther;
+                lvVectorWebresources.LargeImageList = imageListVector;
             }
         }
 
@@ -463,7 +552,7 @@ namespace MsCrmTools.Iconator
         {
             if (listViewEntities.SelectedItems.Count > 0 &&
                 (listViewWebRessources16.SelectedItems.Count > 0 || listViewWebRessources32.SelectedItems.Count > 0 ||
-                 listViewWebRessourcesOther.SelectedItems.Count > 0))
+                 listViewWebRessourcesOther.SelectedItems.Count > 0 || lvVectorWebresources.SelectedItems.Count > 0))
             {
                 foreach (ListViewItem entityItem in listViewEntities.SelectedItems)
                 {
@@ -481,11 +570,11 @@ namespace MsCrmTools.Iconator
                         mapping.WebResourceName = ((Entity)listViewWebRessources32.SelectedItems[0].Tag)["name"].ToString();
                         mapping.ImageSize = 32;
                     }
-                    else
+                    else if (listViewWebRessourcesOther.SelectedItems.Count > 0)
                     {
                         mapping.WebResourceName =
                             ((WebResourcesManager.WebResourceAndImage)listViewWebRessourcesOther.SelectedItems[0].Tag)
-                                .Webresource["name"].ToString();
+                            .Webresource["name"].ToString();
 
                         var issDialog = new ImageSizeSelectionDialog { StartPosition = FormStartPosition.CenterParent };
                         if (issDialog.ShowDialog(this) == DialogResult.OK)
@@ -497,13 +586,18 @@ namespace MsCrmTools.Iconator
                             return;
                         }
                     }
+                    else
+                    {
+                        mapping.WebResourceName = ((Entity)lvVectorWebresources.SelectedItems[0].Tag)["name"].ToString();
+                        mapping.ImageSize = 0;
+                    }
 
                     var item = new ListViewItem(selectedEntity.DisplayName.UserLocalizedLabel.Label)
                     {
                         Tag = mapping
                     };
                     item.SubItems.Add(selectedEntity.LogicalName);
-                    item.SubItems.Add(mapping.ImageSize + "x" + mapping.ImageSize);
+                    item.SubItems.Add(mapping.ImageSize == 0 ? "Vector" : mapping.ImageSize + "x" + mapping.ImageSize);
                     item.SubItems.Add(mapping.WebResourceName);
 
                     foreach (ListViewItem existingItem in lvMappings.Items)
@@ -603,18 +697,11 @@ namespace MsCrmTools.Iconator
             }
 
             colorDialog.Color = ColorTranslator.FromHtml(((EntityMetadata)listViewEntities.SelectedItems[0].Tag).EntityColor);
-            if (colorDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                pictureBox32.BackColor = colorDialog.Color;
-            }
-        }
-
-        private void btnApplyColorChange_Click(object sender, EventArgs e)
-        {
-            if (listViewEntities.SelectedItems.Count == 0)
+            if (colorDialog.ShowDialog(this) != DialogResult.OK)
             {
                 return;
             }
+            pictureBox32.BackColor = colorDialog.Color;
 
             WorkAsync(new WorkAsyncInfo
             {
@@ -632,7 +719,7 @@ namespace MsCrmTools.Iconator
 
                     bw.ReportProgress(0, "Publishing entity");
 
-                    MetadataManager.PublishEntities(emds.Select(emd=>emd.LogicalName).ToList(), Service);
+                    MetadataManager.PublishEntities(emds.Select(emd => emd.LogicalName).ToList(), Service);
                 },
                 PostWorkCallBack = evt =>
                 {
@@ -759,6 +846,14 @@ namespace MsCrmTools.Iconator
             listViewWebRessourcesOther.ForeColor = listViewWebRessourcesOther.ForeColor == Color.FromName("WindowText")
                ? Color.White
                : Color.FromName("WindowText");
+
+            lvVectorWebresources.BackColor = lvVectorWebresources.BackColor == Color.FromName("Window")
+                ? Color.Black
+                : Color.FromName("Window");
+
+            lvVectorWebresources.ForeColor = lvVectorWebresources.ForeColor == Color.FromName("WindowText")
+                ? Color.White
+                : Color.FromName("WindowText");
         }
 
         private void tsbOptimizeIcons_Click(object sender, EventArgs e)

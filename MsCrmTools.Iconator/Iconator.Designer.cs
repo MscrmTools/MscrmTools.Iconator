@@ -37,6 +37,8 @@
             this.listViewWebRessources16 = new System.Windows.Forms.ListView();
             this.tabPage32 = new System.Windows.Forms.TabPage();
             this.listViewWebRessources32 = new System.Windows.Forms.ListView();
+            this.tabPageVector = new System.Windows.Forms.TabPage();
+            this.lvVectorWebresources = new System.Windows.Forms.ListView();
             this.tabPageAutre = new System.Windows.Forms.TabPage();
             this.listViewWebRessourcesOther = new System.Windows.Forms.ListView();
             this.btnPreview = new System.Windows.Forms.Button();
@@ -50,8 +52,9 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnUnmap = new System.Windows.Forms.Button();
             this.groupBoxCurrentIcon = new System.Windows.Forms.GroupBox();
+            this.lblVectorLabel = new System.Windows.Forms.Label();
+            this.pbVector = new System.Windows.Forms.PictureBox();
             this.btnResetColor = new System.Windows.Forms.Button();
-            this.btnApplyColorChange = new System.Windows.Forms.Button();
             this.btnChangeColor = new System.Windows.Forms.Button();
             this.btnResetIcon = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -65,6 +68,9 @@
             this.mainMenu = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbLoad = new System.Windows.Forms.ToolStripDropDownButton();
+            this.loadAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadFromASolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbAddIcon = new System.Windows.Forms.ToolStripButton();
             this.tsbOptimizeIcons = new System.Windows.Forms.ToolStripButton();
@@ -74,9 +80,6 @@
             this.tsbToggleBackground = new System.Windows.Forms.ToolStripButton();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog = new System.Windows.Forms.ColorDialog();
-            this.tsbLoad = new System.Windows.Forms.ToolStripDropDownButton();
-            this.loadFromASolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -85,9 +88,11 @@
             this.tabControlWebResource.SuspendLayout();
             this.tabPage16.SuspendLayout();
             this.tabPage32.SuspendLayout();
+            this.tabPageVector.SuspendLayout();
             this.tabPageAutre.SuspendLayout();
             this.gbMapping.SuspendLayout();
             this.groupBoxCurrentIcon.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbVector)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
             this.gbEntities.SuspendLayout();
@@ -139,6 +144,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlWebResource.Controls.Add(this.tabPage16);
             this.tabControlWebResource.Controls.Add(this.tabPage32);
+            this.tabControlWebResource.Controls.Add(this.tabPageVector);
             this.tabControlWebResource.Controls.Add(this.tabPageAutre);
             this.tabControlWebResource.Location = new System.Drawing.Point(6, 28);
             this.tabControlWebResource.Name = "tabControlWebResource";
@@ -186,6 +192,7 @@
             // 
             this.listViewWebRessources32.BackColor = System.Drawing.Color.Black;
             this.listViewWebRessources32.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewWebRessources32.ForeColor = System.Drawing.Color.White;
             this.listViewWebRessources32.HideSelection = false;
             this.listViewWebRessources32.Location = new System.Drawing.Point(3, 3);
             this.listViewWebRessources32.MultiSelect = false;
@@ -195,6 +202,26 @@
             this.listViewWebRessources32.UseCompatibleStateImageBehavior = false;
             this.listViewWebRessources32.SelectedIndexChanged += new System.EventHandler(this.LvWebRessourcesSelectedIndexChanged);
             this.listViewWebRessources32.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LvWebRessourcesMouseDoubleClick);
+            // 
+            // tabPageVector
+            // 
+            this.tabPageVector.Controls.Add(this.lvVectorWebresources);
+            this.tabPageVector.Location = new System.Drawing.Point(4, 29);
+            this.tabPageVector.Name = "tabPageVector";
+            this.tabPageVector.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageVector.Size = new System.Drawing.Size(841, 363);
+            this.tabPageVector.TabIndex = 3;
+            this.tabPageVector.Text = "Vector Images";
+            this.tabPageVector.UseVisualStyleBackColor = true;
+            // 
+            // lvVectorWebresources
+            // 
+            this.lvVectorWebresources.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvVectorWebresources.Location = new System.Drawing.Point(3, 3);
+            this.lvVectorWebresources.Name = "lvVectorWebresources";
+            this.lvVectorWebresources.Size = new System.Drawing.Size(835, 357);
+            this.lvVectorWebresources.TabIndex = 0;
+            this.lvVectorWebresources.UseCompatibleStateImageBehavior = false;
             // 
             // tabPageAutre
             // 
@@ -245,7 +272,7 @@
             this.btnMap.Location = new System.Drawing.Point(9, 5);
             this.btnMap.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(375, 35);
+            this.btnMap.Size = new System.Drawing.Size(160, 35);
             this.btnMap.TabIndex = 6;
             this.btnMap.Text = "Map";
             this.btnMap.UseVisualStyleBackColor = true;
@@ -261,7 +288,7 @@
             this.gbMapping.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbMapping.Name = "gbMapping";
             this.gbMapping.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbMapping.Size = new System.Drawing.Size(864, 355);
+            this.gbMapping.Size = new System.Drawing.Size(864, 347);
             this.gbMapping.TabIndex = 8;
             this.gbMapping.TabStop = false;
             this.gbMapping.Text = "Mapping";
@@ -281,7 +308,7 @@
             this.lvMappings.Location = new System.Drawing.Point(8, 28);
             this.lvMappings.MultiSelect = false;
             this.lvMappings.Name = "lvMappings";
-            this.lvMappings.Size = new System.Drawing.Size(840, 325);
+            this.lvMappings.Size = new System.Drawing.Size(840, 317);
             this.lvMappings.TabIndex = 3;
             this.lvMappings.UseCompatibleStateImageBehavior = false;
             this.lvMappings.View = System.Windows.Forms.View.Details;
@@ -308,22 +335,22 @@
             // 
             // btnUnmap
             // 
-            this.btnUnmap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUnmap.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnUnmap.Location = new System.Drawing.Point(478, 5);
+            this.btnUnmap.Location = new System.Drawing.Point(177, 4);
             this.btnUnmap.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnUnmap.Name = "btnUnmap";
-            this.btnUnmap.Size = new System.Drawing.Size(375, 35);
+            this.btnUnmap.Size = new System.Drawing.Size(160, 35);
             this.btnUnmap.TabIndex = 7;
-            this.btnUnmap.Text = "Unmap";
+            this.btnUnmap.Text = "Remove mapping";
             this.btnUnmap.UseVisualStyleBackColor = true;
             this.btnUnmap.Click += new System.EventHandler(this.BtnUnmapClick);
             // 
             // groupBoxCurrentIcon
             // 
             this.groupBoxCurrentIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxCurrentIcon.Controls.Add(this.lblVectorLabel);
+            this.groupBoxCurrentIcon.Controls.Add(this.pbVector);
             this.groupBoxCurrentIcon.Controls.Add(this.btnResetColor);
-            this.groupBoxCurrentIcon.Controls.Add(this.btnApplyColorChange);
             this.groupBoxCurrentIcon.Controls.Add(this.btnChangeColor);
             this.groupBoxCurrentIcon.Controls.Add(this.btnResetIcon);
             this.groupBoxCurrentIcon.Controls.Add(this.label3);
@@ -331,41 +358,52 @@
             this.groupBoxCurrentIcon.Controls.Add(this.pictureBox32);
             this.groupBoxCurrentIcon.Controls.Add(this.pictureBox16);
             this.groupBoxCurrentIcon.Enabled = false;
-            this.groupBoxCurrentIcon.Location = new System.Drawing.Point(4, 726);
+            this.groupBoxCurrentIcon.Location = new System.Drawing.Point(4, 619);
             this.groupBoxCurrentIcon.Name = "groupBoxCurrentIcon";
-            this.groupBoxCurrentIcon.Size = new System.Drawing.Size(477, 194);
+            this.groupBoxCurrentIcon.Size = new System.Drawing.Size(477, 301);
             this.groupBoxCurrentIcon.TabIndex = 18;
             this.groupBoxCurrentIcon.TabStop = false;
             this.groupBoxCurrentIcon.Text = "Current Icons";
             // 
+            // lblVectorLabel
+            // 
+            this.lblVectorLabel.AutoSize = true;
+            this.lblVectorLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lblVectorLabel.Location = new System.Drawing.Point(337, 160);
+            this.lblVectorLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblVectorLabel.Name = "lblVectorLabel";
+            this.lblVectorLabel.Size = new System.Drawing.Size(56, 20);
+            this.lblVectorLabel.TabIndex = 9;
+            this.lblVectorLabel.Text = "Vector";
+            // 
+            // pbVector
+            // 
+            this.pbVector.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.pbVector.Location = new System.Drawing.Point(317, 53);
+            this.pbVector.Margin = new System.Windows.Forms.Padding(0);
+            this.pbVector.Name = "pbVector";
+            this.pbVector.Size = new System.Drawing.Size(96, 96);
+            this.pbVector.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbVector.TabIndex = 8;
+            this.pbVector.TabStop = false;
+            // 
             // btnResetColor
             // 
-            this.btnResetColor.Location = new System.Drawing.Point(264, 153);
+            this.btnResetColor.Location = new System.Drawing.Point(240, 261);
             this.btnResetColor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnResetColor.Name = "btnResetColor";
-            this.btnResetColor.Size = new System.Drawing.Size(206, 32);
+            this.btnResetColor.Size = new System.Drawing.Size(225, 32);
             this.btnResetColor.TabIndex = 7;
             this.btnResetColor.Text = "Reset color";
             this.btnResetColor.UseVisualStyleBackColor = true;
             this.btnResetColor.Click += new System.EventHandler(this.btnResetColor_Click);
             // 
-            // btnApplyColorChange
-            // 
-            this.btnApplyColorChange.Location = new System.Drawing.Point(264, 111);
-            this.btnApplyColorChange.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnApplyColorChange.Name = "btnApplyColorChange";
-            this.btnApplyColorChange.Size = new System.Drawing.Size(206, 32);
-            this.btnApplyColorChange.TabIndex = 6;
-            this.btnApplyColorChange.Text = "Apply color change";
-            this.btnApplyColorChange.UseVisualStyleBackColor = true;
-            this.btnApplyColorChange.Click += new System.EventHandler(this.btnApplyColorChange_Click);
-            // 
             // btnChangeColor
             // 
-            this.btnChangeColor.Location = new System.Drawing.Point(264, 69);
+            this.btnChangeColor.Location = new System.Drawing.Point(7, 219);
             this.btnChangeColor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnChangeColor.Name = "btnChangeColor";
-            this.btnChangeColor.Size = new System.Drawing.Size(206, 32);
+            this.btnChangeColor.Size = new System.Drawing.Size(458, 32);
             this.btnChangeColor.TabIndex = 5;
             this.btnChangeColor.Text = "Change color";
             this.btnChangeColor.UseVisualStyleBackColor = true;
@@ -373,10 +411,10 @@
             // 
             // btnResetIcon
             // 
-            this.btnResetIcon.Location = new System.Drawing.Point(264, 27);
+            this.btnResetIcon.Location = new System.Drawing.Point(7, 261);
             this.btnResetIcon.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnResetIcon.Name = "btnResetIcon";
-            this.btnResetIcon.Size = new System.Drawing.Size(206, 32);
+            this.btnResetIcon.Size = new System.Drawing.Size(225, 32);
             this.btnResetIcon.TabIndex = 4;
             this.btnResetIcon.Text = "Reset icons";
             this.btnResetIcon.UseVisualStyleBackColor = true;
@@ -386,7 +424,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(154, 133);
+            this.label3.Location = new System.Drawing.Point(178, 160);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(69, 20);
@@ -396,7 +434,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 133);
+            this.label2.Location = new System.Drawing.Point(42, 160);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(69, 20);
@@ -406,7 +444,7 @@
             // pictureBox32
             // 
             this.pictureBox32.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pictureBox32.Location = new System.Drawing.Point(156, 69);
+            this.pictureBox32.Location = new System.Drawing.Point(180, 69);
             this.pictureBox32.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox32.Name = "pictureBox32";
             this.pictureBox32.Size = new System.Drawing.Size(64, 64);
@@ -416,7 +454,7 @@
             // 
             // pictureBox16
             // 
-            this.pictureBox16.Location = new System.Drawing.Point(45, 77);
+            this.pictureBox16.Location = new System.Drawing.Point(60, 85);
             this.pictureBox16.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox16.Name = "pictureBox16";
             this.pictureBox16.Size = new System.Drawing.Size(32, 32);
@@ -434,7 +472,7 @@
             this.gbEntities.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbEntities.Name = "gbEntities";
             this.gbEntities.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbEntities.Size = new System.Drawing.Size(477, 675);
+            this.gbEntities.Size = new System.Drawing.Size(477, 568);
             this.gbEntities.TabIndex = 17;
             this.gbEntities.TabStop = false;
             this.gbEntities.Text = "Entities";
@@ -451,7 +489,7 @@
             this.listViewEntities.HideSelection = false;
             this.listViewEntities.Location = new System.Drawing.Point(12, 28);
             this.listViewEntities.Name = "listViewEntities";
-            this.listViewEntities.Size = new System.Drawing.Size(458, 639);
+            this.listViewEntities.Size = new System.Drawing.Size(458, 532);
             this.listViewEntities.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewEntities.TabIndex = 1;
             this.listViewEntities.UseCompatibleStateImageBehavior = false;
@@ -504,6 +542,30 @@
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 38);
+            // 
+            // tsbLoad
+            // 
+            this.tsbLoad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadAllToolStripMenuItem,
+            this.loadFromASolutionToolStripMenuItem});
+            this.tsbLoad.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoad.Image")));
+            this.tsbLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbLoad.Name = "tsbLoad";
+            this.tsbLoad.Size = new System.Drawing.Size(252, 35);
+            this.tsbLoad.Text = "Load Entities and Images";
+            this.tsbLoad.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsbLoad_DropDownItemClicked);
+            // 
+            // loadAllToolStripMenuItem
+            // 
+            this.loadAllToolStripMenuItem.Name = "loadAllToolStripMenuItem";
+            this.loadAllToolStripMenuItem.Size = new System.Drawing.Size(262, 30);
+            this.loadAllToolStripMenuItem.Text = "Load All";
+            // 
+            // loadFromASolutionToolStripMenuItem
+            // 
+            this.loadFromASolutionToolStripMenuItem.Name = "loadFromASolutionToolStripMenuItem";
+            this.loadFromASolutionToolStripMenuItem.Size = new System.Drawing.Size(262, 30);
+            this.loadFromASolutionToolStripMenuItem.Text = "Load from a solution";
             // 
             // toolStripSeparator1
             // 
@@ -566,30 +628,7 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "IconDefault16.png");
             this.imageList1.Images.SetKeyName(1, "IconDefault32.png");
-            // 
-            // tsbLoad
-            // 
-            this.tsbLoad.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadAllToolStripMenuItem,
-            this.loadFromASolutionToolStripMenuItem});
-            this.tsbLoad.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoad.Image")));
-            this.tsbLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbLoad.Name = "tsbLoad";
-            this.tsbLoad.Size = new System.Drawing.Size(252, 35);
-            this.tsbLoad.Text = "Load Entities and Images";
-            this.tsbLoad.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsbLoad_DropDownItemClicked);
-            // 
-            // loadFromASolutionToolStripMenuItem
-            // 
-            this.loadFromASolutionToolStripMenuItem.Name = "loadFromASolutionToolStripMenuItem";
-            this.loadFromASolutionToolStripMenuItem.Size = new System.Drawing.Size(263, 30);
-            this.loadFromASolutionToolStripMenuItem.Text = "Load from a solution";
-            // 
-            // loadAllToolStripMenuItem
-            // 
-            this.loadAllToolStripMenuItem.Name = "loadAllToolStripMenuItem";
-            this.loadAllToolStripMenuItem.Size = new System.Drawing.Size(263, 30);
-            this.loadAllToolStripMenuItem.Text = "Load All";
+            this.imageList1.Images.SetKeyName(2, "icon.png");
             // 
             // Iconator
             // 
@@ -611,11 +650,13 @@
             this.tabControlWebResource.ResumeLayout(false);
             this.tabPage16.ResumeLayout(false);
             this.tabPage32.ResumeLayout(false);
+            this.tabPageVector.ResumeLayout(false);
             this.tabPageAutre.ResumeLayout(false);
             this.tabPageAutre.PerformLayout();
             this.gbMapping.ResumeLayout(false);
             this.groupBoxCurrentIcon.ResumeLayout(false);
             this.groupBoxCurrentIcon.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbVector)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).EndInit();
             this.gbEntities.ResumeLayout(false);
@@ -669,10 +710,13 @@
         private System.Windows.Forms.ToolStripButton tsbOptimizeIcons;
         private System.Windows.Forms.Button btnChangeColor;
         private System.Windows.Forms.ColorDialog colorDialog;
-        private System.Windows.Forms.Button btnApplyColorChange;
         private System.Windows.Forms.Button btnResetColor;
         private System.Windows.Forms.ToolStripDropDownButton tsbLoad;
         private System.Windows.Forms.ToolStripMenuItem loadFromASolutionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadAllToolStripMenuItem;
+        private System.Windows.Forms.TabPage tabPageVector;
+        private System.Windows.Forms.ListView lvVectorWebresources;
+        private System.Windows.Forms.Label lblVectorLabel;
+        private System.Windows.Forms.PictureBox pbVector;
     }
 }

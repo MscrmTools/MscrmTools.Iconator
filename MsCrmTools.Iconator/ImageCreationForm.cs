@@ -49,11 +49,11 @@ namespace MsCrmTools.Iconator
         private void BtnAddFilesClick(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog
-                {
-                    Filter = "Image files|*.jpg;*.png;*.gif;*.jpeg",
-                    Multiselect = true,
-                    Title = "Select image files to add as web resource"
-                };
+            {
+                Filter = "Image files|*.jpg;*.png;*.gif;*.jpeg;*.svg",
+                Multiselect = true,
+                Title = "Select image files to add as web resource"
+            };
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -101,6 +101,26 @@ namespace MsCrmTools.Iconator
 
                 webR["name"] = (txtPrefixToUse.Text + fi.Name).Replace(" ", "");
 
+                switch (extension)
+                {
+                    case "png":
+                        webR["webresourcetype"] = new OptionSetValue(5);
+                        break;
+
+                    case "jpg":
+                    case "jpeg":
+                        webR["webresourcetype"] = new OptionSetValue(6);
+                        break;
+
+                    case "gif":
+                        webR["webresourcetype"] = new OptionSetValue(7);
+                        break;
+
+                    case "svg":
+                        webR["webresourcetype"] = new OptionSetValue(11);
+                        break;
+                }
+
                 var fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read);
                 var binaryData = new byte[fs.Length];
                 fs.Read(binaryData, 0, (int)fs.Length);
@@ -134,11 +154,11 @@ namespace MsCrmTools.Iconator
                 if (!CheckBoxDelegates.IsChecked(chkAddToDefaultSolution))
                 {
                     var request = new AddSolutionComponentRequest
-                                      {
-                                          ComponentType = 61,
-                                          SolutionUniqueName = cbbSolutions.SelectedItem.ToString(),
-                                          ComponentId = webR.Id
-                                      };
+                    {
+                        ComponentType = 61,
+                        SolutionUniqueName = cbbSolutions.SelectedItem.ToString(),
+                        ComponentId = webR.Id
+                    };
 
                     _service.Execute(request);
                 }

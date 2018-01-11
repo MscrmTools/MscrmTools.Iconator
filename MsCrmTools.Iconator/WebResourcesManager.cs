@@ -31,7 +31,7 @@ namespace MsCrmTools.Iconator
                     {
                         Conditions =
                         {
-                            new ConditionExpression("webresourcetype", ConditionOperator.In, 5, 6, 7),
+                            new ConditionExpression("webresourcetype", ConditionOperator.In, 5, 6, 7, 11),
                             new ConditionExpression("ishidden", ConditionOperator.Equal, false)
                         }
                     }
@@ -39,8 +39,8 @@ namespace MsCrmTools.Iconator
 
                 return service.RetrieveMultiple(queryWr);
             }
-           
-            var qba = new QueryByAttribute("solutioncomponent") {ColumnSet = new ColumnSet(true)};
+
+            var qba = new QueryByAttribute("solutioncomponent") { ColumnSet = new ColumnSet(true) };
             qba.Attributes.AddRange("solutionid", "componenttype");
             qba.Values.AddRange(solutionId, 61);
 
@@ -66,7 +66,7 @@ namespace MsCrmTools.Iconator
                                 {
                                     new ConditionExpression("ishidden", ConditionOperator.Equal, false),
                                     new ConditionExpression("webresourceid", ConditionOperator.In, list.ToArray()),
-                                    new ConditionExpression("webresourcetype", ConditionOperator.In, 5, 6, 7)
+                                    new ConditionExpression("webresourcetype", ConditionOperator.In, 5, 6, 7, 11)
                                 }
                             },
                             new FilterExpression
@@ -80,7 +80,7 @@ namespace MsCrmTools.Iconator
                             }
                         }
                     },
-                    Orders = {new OrderExpression("name", OrderType.Ascending)}
+                    Orders = { new OrderExpression("name", OrderType.Ascending) }
                 };
 
                 return service.RetrieveMultiple(qe);
