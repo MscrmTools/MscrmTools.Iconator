@@ -259,7 +259,7 @@ namespace MsCrmTools.Iconator
                     var cc = new CrmComponents();
 
                     // Display retrieved entities
-                    var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionId, ConnectionDetail.OrganizationMajorVersion)
+                    var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionId, ConnectionDetail.OrganizationMajorVersion, ConnectionDetail.OrganizationMinorVersion)
                                         orderby entityList.DisplayName.UserLocalizedLabel.Label
                                         select entityList;
 
@@ -500,11 +500,6 @@ namespace MsCrmTools.Iconator
                 listViewWebRessourcesOther.LargeImageList = imageListOther;
                 lvVectorWebresources.LargeImageList = imageListVector;
             }
-        }
-
-        private void TsbConnectClick(object sender, EventArgs e)
-        {
-            ExecuteMethod(DoAction, false);
         }
 
         #region Apply Images to entities

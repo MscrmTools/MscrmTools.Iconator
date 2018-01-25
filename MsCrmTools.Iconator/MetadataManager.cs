@@ -56,7 +56,7 @@ namespace MsCrmTools.Iconator
         /// <param name="solutionId"></param>
         /// <param name="majorVersion"></param>
         /// <returns>Liste des entites retrouvees</returns>
-        public static List<EntityMetadata> GetEntitiesList(IOrganizationService service, Guid solutionId, int majorVersion)
+        public static List<EntityMetadata> GetEntitiesList(IOrganizationService service, Guid solutionId, int majorVersion, int minorVersion)
         {
             if (solutionId != Guid.Empty)
             {
@@ -89,12 +89,16 @@ namespace MsCrmTools.Iconator
                             {
                                 "DisplayName",
                                 "LogicalName",
-                                "EntityColor",
                                 "IconSmallName",
                                 "IconMediumName"
                             }
                         }
                     };
+
+                    if (majorVersion == 7 && minorVersion >= 1 || majorVersion > 7)
+                    {
+                        entityQueryExpression.Properties.PropertyNames.Add("EntityColor");
+                    }
 
                     if (majorVersion >= 9)
                     {
@@ -127,10 +131,14 @@ namespace MsCrmTools.Iconator
                 Properties = new MetadataPropertiesExpression
                 {
                     AllProperties = false,
-                    PropertyNames = { "DisplayName", "LogicalName", "EntityColor", "IconSmallName", "IconMediumName" }
+                    PropertyNames = { "DisplayName", "LogicalName", "IconSmallName", "IconMediumName" }
                 }
             };
 
+            if (majorVersion == 7 && minorVersion >= 1 || majorVersion > 7)
+            {
+                entityQueryExpressionFull.Properties.PropertyNames.Add("EntityColor");
+            }
             if (majorVersion >= 9)
             {
                 entityQueryExpressionFull.Properties.PropertyNames.Add("IconVectorName");

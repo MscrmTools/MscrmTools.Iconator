@@ -245,6 +245,7 @@
             this.listViewWebRessourcesOther.Size = new System.Drawing.Size(841, 328);
             this.listViewWebRessourcesOther.TabIndex = 6;
             this.listViewWebRessourcesOther.UseCompatibleStateImageBehavior = false;
+            this.listViewWebRessourcesOther.SelectedIndexChanged += new System.EventHandler(this.LvWebRessourcesOtherSelectedIndexChanged);
             // 
             // btnPreview
             // 
@@ -288,7 +289,7 @@
             this.gbMapping.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbMapping.Name = "gbMapping";
             this.gbMapping.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbMapping.Size = new System.Drawing.Size(864, 347);
+            this.gbMapping.Size = new System.Drawing.Size(864, 345);
             this.gbMapping.TabIndex = 8;
             this.gbMapping.TabStop = false;
             this.gbMapping.Text = "Mapping";
@@ -308,7 +309,7 @@
             this.lvMappings.Location = new System.Drawing.Point(8, 28);
             this.lvMappings.MultiSelect = false;
             this.lvMappings.Name = "lvMappings";
-            this.lvMappings.Size = new System.Drawing.Size(840, 317);
+            this.lvMappings.Size = new System.Drawing.Size(840, 315);
             this.lvMappings.TabIndex = 3;
             this.lvMappings.UseCompatibleStateImageBehavior = false;
             this.lvMappings.View = System.Windows.Forms.View.Details;
@@ -526,7 +527,7 @@
             this.mainMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.mainMenu.Size = new System.Drawing.Size(1366, 38);
             this.mainMenu.TabIndex = 16;
-            this.mainMenu.Text = "toolStrip1";
+            this.mainMenu.Text = "tsMain";
             // 
             // tsbCloseThisTab
             // 
