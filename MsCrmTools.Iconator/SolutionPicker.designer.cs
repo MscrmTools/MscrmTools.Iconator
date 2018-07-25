@@ -50,29 +50,29 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.lblHeader);
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.panel1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(750, 92);
+            this.panel1.Size = new System.Drawing.Size(917, 110);
             this.panel1.TabIndex = 10;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(10, 58);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(12, 70);
+            this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(408, 23);
+            this.label1.Size = new System.Drawing.Size(489, 28);
             this.label1.TabIndex = 12;
-            this.label1.Text = "Entities and Images from this solution will be loaded";
+            this.label1.Text = "Entities and Images from these solutions will be loaded";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(658, 5);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pictureBox1.Location = new System.Drawing.Point(804, 6);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(87, 77);
+            this.pictureBox1.Size = new System.Drawing.Size(106, 92);
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
@@ -80,19 +80,19 @@
             // 
             this.lblHeader.AutoSize = true;
             this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHeader.Location = new System.Drawing.Point(4, 14);
-            this.lblHeader.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHeader.Location = new System.Drawing.Point(5, 17);
+            this.lblHeader.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(203, 36);
+            this.lblHeader.Size = new System.Drawing.Size(451, 42);
             this.lblHeader.TabIndex = 11;
-            this.lblHeader.Text = "Select a solution";
+            this.lblHeader.Text = "Select one or multiple solutions";
             // 
             // btnSolutionPickerCancel
             // 
-            this.btnSolutionPickerCancel.Location = new System.Drawing.Point(620, 386);
-            this.btnSolutionPickerCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnSolutionPickerCancel.Location = new System.Drawing.Point(758, 463);
+            this.btnSolutionPickerCancel.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.btnSolutionPickerCancel.Name = "btnSolutionPickerCancel";
-            this.btnSolutionPickerCancel.Size = new System.Drawing.Size(112, 35);
+            this.btnSolutionPickerCancel.Size = new System.Drawing.Size(137, 42);
             this.btnSolutionPickerCancel.TabIndex = 4;
             this.btnSolutionPickerCancel.Text = "Cancel";
             this.btnSolutionPickerCancel.UseVisualStyleBackColor = true;
@@ -101,10 +101,10 @@
             // btnSolutionPickerValidate
             // 
             this.btnSolutionPickerValidate.Enabled = false;
-            this.btnSolutionPickerValidate.Location = new System.Drawing.Point(498, 386);
-            this.btnSolutionPickerValidate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnSolutionPickerValidate.Location = new System.Drawing.Point(609, 463);
+            this.btnSolutionPickerValidate.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.btnSolutionPickerValidate.Name = "btnSolutionPickerValidate";
-            this.btnSolutionPickerValidate.Size = new System.Drawing.Size(112, 35);
+            this.btnSolutionPickerValidate.Size = new System.Drawing.Size(137, 42);
             this.btnSolutionPickerValidate.TabIndex = 3;
             this.btnSolutionPickerValidate.Text = "OK";
             this.btnSolutionPickerValidate.UseVisualStyleBackColor = true;
@@ -119,11 +119,10 @@
             this.lstSolutions.Enabled = false;
             this.lstSolutions.FullRowSelect = true;
             this.lstSolutions.GridLines = true;
-            this.lstSolutions.Location = new System.Drawing.Point(10, 102);
-            this.lstSolutions.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.lstSolutions.MultiSelect = false;
+            this.lstSolutions.Location = new System.Drawing.Point(12, 122);
+            this.lstSolutions.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.lstSolutions.Name = "lstSolutions";
-            this.lstSolutions.Size = new System.Drawing.Size(720, 273);
+            this.lstSolutions.Size = new System.Drawing.Size(879, 327);
             this.lstSolutions.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lstSolutions.TabIndex = 1;
             this.lstSolutions.UseCompatibleStateImageBehavior = false;
@@ -148,15 +147,15 @@
             // 
             // SolutionPicker
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(750, 435);
+            this.ClientSize = new System.Drawing.Size(917, 522);
             this.Controls.Add(this.lstSolutions);
             this.Controls.Add(this.btnSolutionPickerCancel);
             this.Controls.Add(this.btnSolutionPickerValidate);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SolutionPicker";

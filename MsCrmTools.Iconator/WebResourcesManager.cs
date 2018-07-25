@@ -6,6 +6,7 @@
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -17,11 +18,11 @@ namespace MsCrmTools.Iconator
         /// Recupere la liste des web resources d'un solution ciblee
         /// </summary>
         /// <param name="service">CRM Service</param>
-        /// <param name="solutionId">Identifiant unique de la solution à partir de laquelle retrouver les images</param>
+        /// <param name="solutionIds">Identifiant unique de la solution à partir de laquelle retrouver les images</param>
         /// <returns>Liste des web resources retrouvees</returns>
-        public static EntityCollection GetWebResourcesOnSolution(IOrganizationService service, Guid solutionId)
+        public static EntityCollection GetWebResourcesOnSolution(IOrganizationService service, List<Guid> solutionIds)
         {
-            if (solutionId == Guid.Empty)
+            if (solutionIds.Count == 0)
             {
                 var queryWr = new QueryExpression
                 {
@@ -40,11 +41,21 @@ namespace MsCrmTools.Iconator
                 return service.RetrieveMultiple(queryWr);
             }
 
-            var qba = new QueryByAttribute("solutioncomponent") { ColumnSet = new ColumnSet(true) };
-            qba.Attributes.AddRange("solutionid", "componenttype");
-            qba.Values.AddRange(solutionId, 61);
+            var query = new QueryExpression("solutioncomponent")
+            {
+                NoLock = true,
+                ColumnSet = new ColumnSet(true),
+                Criteria = new FilterExpression
+                {
+                    Conditions =
+                    {
+                        new ConditionExpression("solutionid", ConditionOperator.In, solutionIds.ToArray()),
+                        new ConditionExpression("componenttype", ConditionOperator.Equal, 61)
+                    }
+                }
+            };
 
-            var components = service.RetrieveMultiple(qba).Entities;
+            var components = service.RetrieveMultiple(query).Entities;
 
             var list = components.Select(component => component.GetAttributeValue<Guid>("objectid")
                 .ToString("B"))

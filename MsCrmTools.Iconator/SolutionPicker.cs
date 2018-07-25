@@ -1,10 +1,12 @@
-﻿using System;
-using System.ComponentModel;
-using System.ServiceModel;
-using System.Windows.Forms;
-using Microsoft.Xrm.Sdk;
+﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using MsCrmTools.Iconator.AppCode;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.ServiceModel;
+using System.Windows.Forms;
 
 namespace MsCrmTools.Iconator
 {
@@ -19,11 +21,11 @@ namespace MsCrmTools.Iconator
             innerService = service;
         }
 
-        public Entity SelectedSolution { get; set; }
+        public List<Entity> SelectedSolutions { get; set; }
 
         private void btnSolutionPickerCancel_Click(object sender, EventArgs e)
         {
-            SelectedSolution = null;
+            SelectedSolutions = null;
             DialogResult = DialogResult.Cancel;
             Close();
         }
@@ -32,7 +34,7 @@ namespace MsCrmTools.Iconator
         {
             if (lstSolutions.SelectedItems.Count > 0)
             {
-                SelectedSolution = (Entity)lstSolutions.SelectedItems[0].Tag;
+                SelectedSolutions = lstSolutions.SelectedItems.Cast<ListViewItem>().Select(i => (Entity)i.Tag).ToList();
                 DialogResult = DialogResult.OK;
                 Close();
             }

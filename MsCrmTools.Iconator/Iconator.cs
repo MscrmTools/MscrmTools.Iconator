@@ -3,20 +3,17 @@
 // CODEPLEX: http://xrmtoolbox.codeplex.com
 // BLOG: http://mscrmtools.blogspot.com
 
+using McTools.Xrm.Connection;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using MsCrmTools.Iconator.AppCode;
-using MsCrmTools.Iconator.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
-using McTools.Xrm.Connection;
-using Svg;
 using XrmToolBox.Extensibility.Interfaces;
 
 namespace MsCrmTools.Iconator
@@ -28,6 +25,14 @@ namespace MsCrmTools.Iconator
         private readonly List<Entity> webResourceRetrivedList;
 
         private Color defaultColor;
+
+        public string HelpUrl
+        {
+            get
+            {
+                return "https://github.com/MscrmTools/MscrmTools.Iconator/wiki";
+            }
+        }
 
         public string RepositoryName
         {
@@ -45,14 +50,6 @@ namespace MsCrmTools.Iconator
             }
         }
 
-        public string HelpUrl
-        {
-            get
-            {
-                return "https://github.com/MscrmTools/MscrmTools.Iconator/wiki";
-            }
-        }
-
         #endregion Variables
 
         #region Constructor
@@ -61,6 +58,24 @@ namespace MsCrmTools.Iconator
         {
             InitializeComponent();
             webResourceRetrivedList = new List<Entity>();
+        }
+
+        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
+        {
+            SetOrganizationVersionSpecificItems(detail);
+
+            listViewEntities.Items.Clear();
+            listViewWebRessources16.Items.Clear();
+            listViewWebRessources32.Items.Clear();
+            listViewWebRessourcesOther.Items.Clear();
+            lvVectorWebresources.Items.Clear();
+            webResourceRetrivedList.Clear();
+
+            pictureBox16.Image = imageList1.Images[0];
+            pictureBox32.Image = imageList1.Images[1];
+            pbVector.Image = imageList1.Images[2];
+
+            base.UpdateConnection(newService, detail, actionName, parameter);
         }
 
         private void Iconator_Load(object sender, EventArgs e)
@@ -111,24 +126,6 @@ namespace MsCrmTools.Iconator
             {
                 defaultColor = Color.FromArgb(0, 0, 0, 0);
             }
-        }
-
-        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
-        {
-            SetOrganizationVersionSpecificItems(detail);
-
-            listViewEntities.Items.Clear();
-            listViewWebRessources16.Items.Clear();
-            listViewWebRessources32.Items.Clear();
-            listViewWebRessourcesOther.Items.Clear();
-            lvVectorWebresources.Items.Clear();
-            webResourceRetrivedList.Clear();
-
-            pictureBox16.Image = imageList1.Images[0];
-            pictureBox32.Image = imageList1.Images[1];
-            pbVector.Image = imageList1.Images[2];
-
-            base.UpdateConnection(newService, detail, actionName, parameter);
         }
 
         #endregion Constructor
@@ -239,27 +236,27 @@ namespace MsCrmTools.Iconator
             listViewWebRessourcesOther.Items.Clear();
             lvVectorWebresources.Items.Clear();
 
-            var solutionId = Guid.Empty;
+            var solutionIds = new List<Guid>();
 
             if (fromSolution)
             {
                 var sPicker = new SolutionPicker(Service);
                 if (sPicker.ShowDialog(ParentForm) == DialogResult.OK)
                 {
-                    solutionId = sPicker.SelectedSolution.Id;
+                    solutionIds = sPicker.SelectedSolutions.Select(s => s.Id).ToList();
                 }
             }
 
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Loading Entities...",
-                AsyncArgument = solutionId,
+                AsyncArgument = solutionIds,
                 Work = (bw, e) =>
                 {
                     var cc = new CrmComponents();
 
                     // Display retrieved entities
-                    var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionId, ConnectionDetail.OrganizationMajorVersion, ConnectionDetail.OrganizationMinorVersion)
+                    var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionIds, ConnectionDetail.OrganizationMajorVersion, ConnectionDetail.OrganizationMinorVersion)
                                         orderby entityList.DisplayName.UserLocalizedLabel.Label
                                         select entityList;
 
@@ -273,7 +270,7 @@ namespace MsCrmTools.Iconator
                     bw.ReportProgress(0, "Loading Web resources...");
 
                     var queryWebResources =
-                        from webResourceList in WebResourcesManager.GetWebResourcesOnSolution(Service, solutionId).Entities
+                        from webResourceList in WebResourcesManager.GetWebResourcesOnSolution(Service, solutionIds).Entities
                         orderby webResourceList.GetAttributeValue<string>("name")
                         select webResourceList;
 
@@ -638,52 +635,6 @@ namespace MsCrmTools.Iconator
 
         #region Reset Icons
 
-        private void BtnResetIconClick(object sender, EventArgs e)
-        {
-            if (listViewEntities.SelectedItems.Count == 0)
-            {
-                return;
-            }
-            if (DialogResult.Yes ==
-                MessageBox.Show(this, "Are you sure you want to reset icons for the selected entities?", "Question",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question))
-            {
-                SetEnableState(false);
-
-                WorkAsync(new WorkAsyncInfo
-                {
-                    Message = "Reseting icons for entity. Please wait...",
-                    AsyncArgument = listViewEntities.SelectedItems.Cast<ListViewItem>().ToList(),
-                    Work = (bw, evt) =>
-                    {
-                        var items = (IEnumerable<ListViewItem>)evt.Argument;
-                        foreach (var item in items)
-                        {
-                            var emd = (EntityMetadata)item.Tag;
-                            MetadataManager.ResetIcons(emd, Service);
-                        }
-
-                        MetadataManager.PublishEntities(items.Select(i => ((EntityMetadata)i.Tag).LogicalName).ToList(), Service);
-                    },
-                    PostWorkCallBack = evt =>
-                    {
-                        SetEnableState(true);
-
-                        if (evt.Error != null)
-                        {
-                            MessageBox.Show(this, "Error while reseting icons for entity: " + evt.Error.Message,
-                                "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        else
-                        {
-                            LvEntitiesSelectedIndexChanged(null, null);
-                        }
-                    },
-                });
-            }
-        }
-
         private void btnChangeColor_Click(object sender, EventArgs e)
         {
             if (listViewEntities.SelectedItems.Count == 0)
@@ -777,6 +728,52 @@ namespace MsCrmTools.Iconator
             });
         }
 
+        private void BtnResetIconClick(object sender, EventArgs e)
+        {
+            if (listViewEntities.SelectedItems.Count == 0)
+            {
+                return;
+            }
+            if (DialogResult.Yes ==
+                MessageBox.Show(this, "Are you sure you want to reset icons for the selected entities?", "Question",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                SetEnableState(false);
+
+                WorkAsync(new WorkAsyncInfo
+                {
+                    Message = "Reseting icons for entity. Please wait...",
+                    AsyncArgument = listViewEntities.SelectedItems.Cast<ListViewItem>().ToList(),
+                    Work = (bw, evt) =>
+                    {
+                        var items = (IEnumerable<ListViewItem>)evt.Argument;
+                        foreach (var item in items)
+                        {
+                            var emd = (EntityMetadata)item.Tag;
+                            MetadataManager.ResetIcons(emd, Service);
+                        }
+
+                        MetadataManager.PublishEntities(items.Select(i => ((EntityMetadata)i.Tag).LogicalName).ToList(), Service);
+                    },
+                    PostWorkCallBack = evt =>
+                    {
+                        SetEnableState(true);
+
+                        if (evt.Error != null)
+                        {
+                            MessageBox.Show(this, "Error while reseting icons for entity: " + evt.Error.Message,
+                                "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            LvEntitiesSelectedIndexChanged(null, null);
+                        }
+                    },
+                });
+            }
+        }
+
         #endregion Reset Icons
 
         #region Others
@@ -811,9 +808,36 @@ namespace MsCrmTools.Iconator
 
         #endregion Others
 
+        private void listViewEntities_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            var list = (ListView)sender;
+            list.Sorting = list.Sorting == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+            list.ListViewItemSorter = new ListViewItemComparer(e.Column, list.Sorting);
+        }
+
         private void TsbCloseThisTabClick(object sender, EventArgs e)
         {
             CloseTool();
+        }
+
+        private void tsbLoad_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == loadFromASolutionToolStripMenuItem)
+            {
+                ExecuteMethod(DoAction, true);
+            }
+            else
+            {
+                ExecuteMethod(DoAction, false);
+            }
+        }
+
+        private void tsbOptimizeIcons_Click(object sender, EventArgs e)
+        {
+            var webResources = listViewWebRessources32.Items.Cast<ListViewItem>().Select(i => (Entity)i.Tag).ToList();
+
+            var dlg = new IconOptimizer(webResources, Service);
+            dlg.ShowDialog();
         }
 
         private void tsbToggleBackground_Click(object sender, EventArgs e)
@@ -849,33 +873,6 @@ namespace MsCrmTools.Iconator
             lvVectorWebresources.ForeColor = lvVectorWebresources.ForeColor == Color.FromName("WindowText")
                 ? Color.White
                 : Color.FromName("WindowText");
-        }
-
-        private void tsbOptimizeIcons_Click(object sender, EventArgs e)
-        {
-            var webResources = listViewWebRessources32.Items.Cast<ListViewItem>().Select(i => (Entity)i.Tag).ToList();
-
-            var dlg = new IconOptimizer(webResources, Service);
-            dlg.ShowDialog();
-        }
-
-        private void listViewEntities_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            var list = (ListView)sender;
-            list.Sorting = list.Sorting == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
-            list.ListViewItemSorter = new ListViewItemComparer(e.Column, list.Sorting);
-        }
-
-        private void tsbLoad_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            if (e.ClickedItem == loadFromASolutionToolStripMenuItem)
-            {
-                ExecuteMethod(DoAction, true);
-            }
-            else
-            {
-                ExecuteMethod(DoAction, false);
-            }
         }
     }
 }

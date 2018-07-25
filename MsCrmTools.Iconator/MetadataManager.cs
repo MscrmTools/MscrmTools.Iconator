@@ -7,13 +7,13 @@ using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
-using MsCrmTools.Iconator.AppCode;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using System.Drawing;
 using Microsoft.Xrm.Sdk.Metadata.Query;
 using Microsoft.Xrm.Sdk.Query;
+using MsCrmTools.Iconator.AppCode;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace MsCrmTools.Iconator
 {
@@ -53,18 +53,28 @@ namespace MsCrmTools.Iconator
         /// Recupere la liste des EntityMetadata presente dans la CRM
         /// </summary>
         /// <param name="service">CRM Service</param>
-        /// <param name="solutionId"></param>
+        /// <param name="solutionIds"></param>
         /// <param name="majorVersion"></param>
         /// <returns>Liste des entites retrouvees</returns>
-        public static List<EntityMetadata> GetEntitiesList(IOrganizationService service, Guid solutionId, int majorVersion, int minorVersion)
+        public static List<EntityMetadata> GetEntitiesList(IOrganizationService service, List<Guid> solutionIds, int majorVersion, int minorVersion)
         {
-            if (solutionId != Guid.Empty)
+            if (solutionIds.Count > 0)
             {
-                var qba = new QueryByAttribute("solutioncomponent") { ColumnSet = new ColumnSet(true) };
-                qba.Attributes.AddRange("solutionid", "componenttype");
-                qba.Values.AddRange(solutionId, 1);
+                var query = new QueryExpression("solutioncomponent")
+                {
+                    NoLock = true,
+                    ColumnSet = new ColumnSet(true),
+                    Criteria = new FilterExpression
+                    {
+                        Conditions =
+                        {
+                            new ConditionExpression("solutionid", ConditionOperator.In, solutionIds.ToArray()),
+                            new ConditionExpression("componenttype", ConditionOperator.Equal, 1)
+                        }
+                    }
+                };
 
-                var components = service.RetrieveMultiple(qba).Entities;
+                var components = service.RetrieveMultiple(query).Entities;
 
                 var list = components.Select(component => component.GetAttributeValue<Guid>("objectid"))
                     .ToList();
