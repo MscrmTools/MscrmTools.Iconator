@@ -65,6 +65,9 @@
             this.listViewEntities = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pnlEntitiesTop = new System.Windows.Forms.Panel();
+            this.llShowAllEntities = new System.Windows.Forms.LinkLabel();
+            this.llShowEmptyIcon = new System.Windows.Forms.LinkLabel();
             this.mainMenu = new System.Windows.Forms.ToolStrip();
             this.tsbCloseThisTab = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -96,6 +99,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).BeginInit();
             this.gbEntities.SuspendLayout();
+            this.pnlEntitiesTop.SuspendLayout();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,8 +109,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Enabled = false;
-            this.splitContainer1.Location = new System.Drawing.Point(599, 48);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.splitContainer1.Location = new System.Drawing.Point(490, 40);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -119,9 +123,9 @@
             this.splitContainer1.Panel2.Controls.Add(this.btnMap);
             this.splitContainer1.Panel2.Controls.Add(this.gbMapping);
             this.splitContainer1.Panel2.Controls.Add(this.btnUnmap);
-            this.splitContainer1.Size = new System.Drawing.Size(1066, 1054);
-            this.splitContainer1.SplitterDistance = 523;
-            this.splitContainer1.SplitterWidth = 7;
+            this.splitContainer1.Size = new System.Drawing.Size(856, 861);
+            this.splitContainer1.SplitterDistance = 425;
+            this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 19;
             // 
             // gbWebResources
@@ -130,11 +134,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbWebResources.Controls.Add(this.tabControlWebResource);
-            this.gbWebResources.Location = new System.Drawing.Point(4, 4);
-            this.gbWebResources.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbWebResources.Location = new System.Drawing.Point(3, 3);
             this.gbWebResources.Name = "gbWebResources";
-            this.gbWebResources.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gbWebResources.Size = new System.Drawing.Size(1058, 516);
+            this.gbWebResources.Size = new System.Drawing.Size(850, 419);
             this.gbWebResources.TabIndex = 3;
             this.gbWebResources.TabStop = false;
             this.gbWebResources.Text = "Web Resources";
@@ -148,22 +150,20 @@
             this.tabControlWebResource.Controls.Add(this.tabPage32);
             this.tabControlWebResource.Controls.Add(this.tabPageVector);
             this.tabControlWebResource.Controls.Add(this.tabPageAutre);
-            this.tabControlWebResource.Location = new System.Drawing.Point(7, 34);
-            this.tabControlWebResource.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControlWebResource.Location = new System.Drawing.Point(6, 28);
             this.tabControlWebResource.Name = "tabControlWebResource";
             this.tabControlWebResource.SelectedIndex = 0;
-            this.tabControlWebResource.Size = new System.Drawing.Size(1038, 475);
+            this.tabControlWebResource.Size = new System.Drawing.Size(833, 385);
             this.tabControlWebResource.TabIndex = 5;
             this.tabControlWebResource.SelectedIndexChanged += new System.EventHandler(this.TabControlWebResourceSelectedIndexChanged);
             // 
             // tabPage16
             // 
             this.tabPage16.Controls.Add(this.listViewWebRessources16);
-            this.tabPage16.Location = new System.Drawing.Point(4, 33);
-            this.tabPage16.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage16.Location = new System.Drawing.Point(4, 29);
             this.tabPage16.Name = "tabPage16";
-            this.tabPage16.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage16.Size = new System.Drawing.Size(1030, 438);
+            this.tabPage16.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage16.Size = new System.Drawing.Size(825, 352);
             this.tabPage16.TabIndex = 0;
             this.tabPage16.Text = "16x16 Images";
             this.tabPage16.UseVisualStyleBackColor = true;
@@ -172,24 +172,21 @@
             // 
             this.listViewWebRessources16.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewWebRessources16.HideSelection = false;
-            this.listViewWebRessources16.Location = new System.Drawing.Point(4, 4);
-            this.listViewWebRessources16.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listViewWebRessources16.Location = new System.Drawing.Point(3, 3);
             this.listViewWebRessources16.MultiSelect = false;
             this.listViewWebRessources16.Name = "listViewWebRessources16";
-            this.listViewWebRessources16.Size = new System.Drawing.Size(1022, 430);
+            this.listViewWebRessources16.Size = new System.Drawing.Size(819, 346);
             this.listViewWebRessources16.TabIndex = 2;
             this.listViewWebRessources16.UseCompatibleStateImageBehavior = false;
-            this.listViewWebRessources16.SelectedIndexChanged += new System.EventHandler(this.LvWebRessourcesSelectedIndexChanged);
             this.listViewWebRessources16.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LvWebRessourcesMouseDoubleClick);
             // 
             // tabPage32
             // 
             this.tabPage32.Controls.Add(this.listViewWebRessources32);
-            this.tabPage32.Location = new System.Drawing.Point(4, 33);
-            this.tabPage32.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage32.Location = new System.Drawing.Point(4, 29);
             this.tabPage32.Name = "tabPage32";
-            this.tabPage32.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPage32.Size = new System.Drawing.Size(1030, 438);
+            this.tabPage32.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage32.Size = new System.Drawing.Size(825, 352);
             this.tabPage32.TabIndex = 1;
             this.tabPage32.Text = "32x32 Images";
             this.tabPage32.UseVisualStyleBackColor = true;
@@ -200,24 +197,21 @@
             this.listViewWebRessources32.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewWebRessources32.ForeColor = System.Drawing.Color.White;
             this.listViewWebRessources32.HideSelection = false;
-            this.listViewWebRessources32.Location = new System.Drawing.Point(4, 4);
-            this.listViewWebRessources32.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listViewWebRessources32.Location = new System.Drawing.Point(3, 3);
             this.listViewWebRessources32.MultiSelect = false;
             this.listViewWebRessources32.Name = "listViewWebRessources32";
-            this.listViewWebRessources32.Size = new System.Drawing.Size(1022, 430);
+            this.listViewWebRessources32.Size = new System.Drawing.Size(819, 346);
             this.listViewWebRessources32.TabIndex = 1;
             this.listViewWebRessources32.UseCompatibleStateImageBehavior = false;
-            this.listViewWebRessources32.SelectedIndexChanged += new System.EventHandler(this.LvWebRessourcesSelectedIndexChanged);
             this.listViewWebRessources32.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LvWebRessourcesMouseDoubleClick);
             // 
             // tabPageVector
             // 
             this.tabPageVector.Controls.Add(this.lvVectorWebresources);
-            this.tabPageVector.Location = new System.Drawing.Point(4, 33);
-            this.tabPageVector.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageVector.Location = new System.Drawing.Point(4, 29);
             this.tabPageVector.Name = "tabPageVector";
-            this.tabPageVector.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPageVector.Size = new System.Drawing.Size(1030, 438);
+            this.tabPageVector.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageVector.Size = new System.Drawing.Size(825, 352);
             this.tabPageVector.TabIndex = 3;
             this.tabPageVector.Text = "Vector Images";
             this.tabPageVector.UseVisualStyleBackColor = true;
@@ -225,22 +219,22 @@
             // lvVectorWebresources
             // 
             this.lvVectorWebresources.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvVectorWebresources.Location = new System.Drawing.Point(4, 4);
-            this.lvVectorWebresources.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lvVectorWebresources.HideSelection = false;
+            this.lvVectorWebresources.Location = new System.Drawing.Point(3, 3);
             this.lvVectorWebresources.Name = "lvVectorWebresources";
-            this.lvVectorWebresources.Size = new System.Drawing.Size(1022, 430);
+            this.lvVectorWebresources.Size = new System.Drawing.Size(819, 346);
             this.lvVectorWebresources.TabIndex = 0;
             this.lvVectorWebresources.UseCompatibleStateImageBehavior = false;
+            this.lvVectorWebresources.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LvWebRessourcesMouseDoubleClick);
             // 
             // tabPageAutre
             // 
             this.tabPageAutre.Controls.Add(this.listViewWebRessourcesOther);
             this.tabPageAutre.Controls.Add(this.btnPreview);
             this.tabPageAutre.Controls.Add(this.labelSizeWr);
-            this.tabPageAutre.Location = new System.Drawing.Point(4, 33);
-            this.tabPageAutre.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPageAutre.Location = new System.Drawing.Point(4, 29);
             this.tabPageAutre.Name = "tabPageAutre";
-            this.tabPageAutre.Size = new System.Drawing.Size(1030, 438);
+            this.tabPageAutre.Size = new System.Drawing.Size(825, 352);
             this.tabPageAutre.TabIndex = 2;
             this.tabPageAutre.Text = "Other images";
             this.tabPageAutre.UseVisualStyleBackColor = true;
@@ -250,21 +244,21 @@
             this.listViewWebRessourcesOther.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewWebRessourcesOther.HideSelection = false;
             this.listViewWebRessourcesOther.Location = new System.Drawing.Point(0, 0);
-            this.listViewWebRessourcesOther.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listViewWebRessourcesOther.MultiSelect = false;
             this.listViewWebRessourcesOther.Name = "listViewWebRessourcesOther";
-            this.listViewWebRessourcesOther.Size = new System.Drawing.Size(1030, 396);
+            this.listViewWebRessourcesOther.Size = new System.Drawing.Size(825, 317);
             this.listViewWebRessourcesOther.TabIndex = 6;
             this.listViewWebRessourcesOther.UseCompatibleStateImageBehavior = false;
             this.listViewWebRessourcesOther.SelectedIndexChanged += new System.EventHandler(this.LvWebRessourcesOtherSelectedIndexChanged);
+            this.listViewWebRessourcesOther.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LvWebRessourcesMouseDoubleClick);
             // 
             // btnPreview
             // 
             this.btnPreview.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnPreview.Location = new System.Drawing.Point(0, 396);
-            this.btnPreview.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btnPreview.Location = new System.Drawing.Point(0, 317);
+            this.btnPreview.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPreview.Name = "btnPreview";
-            this.btnPreview.Size = new System.Drawing.Size(1030, 42);
+            this.btnPreview.Size = new System.Drawing.Size(825, 35);
             this.btnPreview.TabIndex = 5;
             this.btnPreview.Text = "Preview";
             this.btnPreview.UseVisualStyleBackColor = true;
@@ -274,18 +268,17 @@
             // 
             this.labelSizeWr.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelSizeWr.AutoSize = true;
-            this.labelSizeWr.Location = new System.Drawing.Point(4, 367);
-            this.labelSizeWr.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelSizeWr.Location = new System.Drawing.Point(3, 299);
             this.labelSizeWr.Name = "labelSizeWr";
-            this.labelSizeWr.Size = new System.Drawing.Size(0, 25);
+            this.labelSizeWr.Size = new System.Drawing.Size(0, 20);
             this.labelSizeWr.TabIndex = 4;
             // 
             // btnMap
             // 
-            this.btnMap.Location = new System.Drawing.Point(11, 6);
-            this.btnMap.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btnMap.Location = new System.Drawing.Point(9, 5);
+            this.btnMap.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(196, 42);
+            this.btnMap.Size = new System.Drawing.Size(160, 35);
             this.btnMap.TabIndex = 6;
             this.btnMap.Text = "Map";
             this.btnMap.UseVisualStyleBackColor = true;
@@ -297,11 +290,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbMapping.Controls.Add(this.lvMappings);
-            this.gbMapping.Location = new System.Drawing.Point(5, 59);
-            this.gbMapping.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.gbMapping.Location = new System.Drawing.Point(4, 49);
+            this.gbMapping.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbMapping.Name = "gbMapping";
-            this.gbMapping.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.gbMapping.Size = new System.Drawing.Size(1056, 413);
+            this.gbMapping.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gbMapping.Size = new System.Drawing.Size(848, 331);
             this.gbMapping.TabIndex = 8;
             this.gbMapping.TabStop = false;
             this.gbMapping.Text = "Mapping";
@@ -318,11 +311,10 @@
             this.columnHeader5});
             this.lvMappings.FullRowSelect = true;
             this.lvMappings.HideSelection = false;
-            this.lvMappings.Location = new System.Drawing.Point(10, 34);
-            this.lvMappings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lvMappings.Location = new System.Drawing.Point(8, 28);
             this.lvMappings.MultiSelect = false;
             this.lvMappings.Name = "lvMappings";
-            this.lvMappings.Size = new System.Drawing.Size(1026, 376);
+            this.lvMappings.Size = new System.Drawing.Size(824, 300);
             this.lvMappings.TabIndex = 3;
             this.lvMappings.UseCompatibleStateImageBehavior = false;
             this.lvMappings.View = System.Windows.Forms.View.Details;
@@ -350,10 +342,10 @@
             // btnUnmap
             // 
             this.btnUnmap.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnUnmap.Location = new System.Drawing.Point(216, 5);
-            this.btnUnmap.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btnUnmap.Location = new System.Drawing.Point(177, 4);
+            this.btnUnmap.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnUnmap.Name = "btnUnmap";
-            this.btnUnmap.Size = new System.Drawing.Size(196, 42);
+            this.btnUnmap.Size = new System.Drawing.Size(160, 35);
             this.btnUnmap.TabIndex = 7;
             this.btnUnmap.Text = "Remove mapping";
             this.btnUnmap.UseVisualStyleBackColor = true;
@@ -372,11 +364,9 @@
             this.groupBoxCurrentIcon.Controls.Add(this.pictureBox32);
             this.groupBoxCurrentIcon.Controls.Add(this.pictureBox16);
             this.groupBoxCurrentIcon.Enabled = false;
-            this.groupBoxCurrentIcon.Location = new System.Drawing.Point(5, 743);
-            this.groupBoxCurrentIcon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxCurrentIcon.Location = new System.Drawing.Point(4, 602);
             this.groupBoxCurrentIcon.Name = "groupBoxCurrentIcon";
-            this.groupBoxCurrentIcon.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBoxCurrentIcon.Size = new System.Drawing.Size(583, 361);
+            this.groupBoxCurrentIcon.Size = new System.Drawing.Size(477, 301);
             this.groupBoxCurrentIcon.TabIndex = 18;
             this.groupBoxCurrentIcon.TabStop = false;
             this.groupBoxCurrentIcon.Text = "Current Icons";
@@ -385,30 +375,30 @@
             // 
             this.lblVectorLabel.AutoSize = true;
             this.lblVectorLabel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblVectorLabel.Location = new System.Drawing.Point(412, 192);
-            this.lblVectorLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lblVectorLabel.Location = new System.Drawing.Point(337, 160);
+            this.lblVectorLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblVectorLabel.Name = "lblVectorLabel";
-            this.lblVectorLabel.Size = new System.Drawing.Size(69, 25);
+            this.lblVectorLabel.Size = new System.Drawing.Size(56, 20);
             this.lblVectorLabel.TabIndex = 9;
             this.lblVectorLabel.Text = "Vector";
             // 
             // pbVector
             // 
             this.pbVector.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pbVector.Location = new System.Drawing.Point(387, 64);
+            this.pbVector.Location = new System.Drawing.Point(317, 53);
             this.pbVector.Margin = new System.Windows.Forms.Padding(0);
             this.pbVector.Name = "pbVector";
-            this.pbVector.Size = new System.Drawing.Size(117, 115);
+            this.pbVector.Size = new System.Drawing.Size(96, 96);
             this.pbVector.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbVector.TabIndex = 8;
             this.pbVector.TabStop = false;
             // 
             // btnResetColor
             // 
-            this.btnResetColor.Location = new System.Drawing.Point(293, 313);
-            this.btnResetColor.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btnResetColor.Location = new System.Drawing.Point(240, 261);
+            this.btnResetColor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnResetColor.Name = "btnResetColor";
-            this.btnResetColor.Size = new System.Drawing.Size(275, 38);
+            this.btnResetColor.Size = new System.Drawing.Size(225, 32);
             this.btnResetColor.TabIndex = 7;
             this.btnResetColor.Text = "Reset color";
             this.btnResetColor.UseVisualStyleBackColor = true;
@@ -416,10 +406,10 @@
             // 
             // btnChangeColor
             // 
-            this.btnChangeColor.Location = new System.Drawing.Point(9, 263);
-            this.btnChangeColor.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btnChangeColor.Location = new System.Drawing.Point(7, 219);
+            this.btnChangeColor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnChangeColor.Name = "btnChangeColor";
-            this.btnChangeColor.Size = new System.Drawing.Size(560, 38);
+            this.btnChangeColor.Size = new System.Drawing.Size(458, 32);
             this.btnChangeColor.TabIndex = 5;
             this.btnChangeColor.Text = "Change color";
             this.btnChangeColor.UseVisualStyleBackColor = true;
@@ -427,10 +417,10 @@
             // 
             // btnResetIcon
             // 
-            this.btnResetIcon.Location = new System.Drawing.Point(9, 313);
-            this.btnResetIcon.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.btnResetIcon.Location = new System.Drawing.Point(7, 261);
+            this.btnResetIcon.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnResetIcon.Name = "btnResetIcon";
-            this.btnResetIcon.Size = new System.Drawing.Size(275, 38);
+            this.btnResetIcon.Size = new System.Drawing.Size(225, 32);
             this.btnResetIcon.TabIndex = 4;
             this.btnResetIcon.Text = "Reset icons";
             this.btnResetIcon.UseVisualStyleBackColor = true;
@@ -440,40 +430,40 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(218, 192);
-            this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label3.Location = new System.Drawing.Point(178, 160);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 25);
+            this.label3.Size = new System.Drawing.Size(69, 20);
             this.label3.TabIndex = 3;
             this.label3.Text = "32 by 32";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(51, 192);
-            this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label2.Location = new System.Drawing.Point(42, 160);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 25);
+            this.label2.Size = new System.Drawing.Size(69, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "16 by 16";
             // 
             // pictureBox32
             // 
             this.pictureBox32.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pictureBox32.Location = new System.Drawing.Point(220, 83);
+            this.pictureBox32.Location = new System.Drawing.Point(180, 69);
             this.pictureBox32.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox32.Name = "pictureBox32";
-            this.pictureBox32.Size = new System.Drawing.Size(78, 77);
+            this.pictureBox32.Size = new System.Drawing.Size(64, 64);
             this.pictureBox32.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox32.TabIndex = 1;
             this.pictureBox32.TabStop = false;
             // 
             // pictureBox16
             // 
-            this.pictureBox16.Location = new System.Drawing.Point(73, 102);
+            this.pictureBox16.Location = new System.Drawing.Point(60, 85);
             this.pictureBox16.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox16.Name = "pictureBox16";
-            this.pictureBox16.Size = new System.Drawing.Size(39, 38);
+            this.pictureBox16.Size = new System.Drawing.Size(32, 32);
             this.pictureBox16.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox16.TabIndex = 0;
             this.pictureBox16.TabStop = false;
@@ -483,30 +473,28 @@
             this.gbEntities.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.gbEntities.Controls.Add(this.listViewEntities);
+            this.gbEntities.Controls.Add(this.pnlEntitiesTop);
             this.gbEntities.Enabled = false;
-            this.gbEntities.Location = new System.Drawing.Point(5, 52);
-            this.gbEntities.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.gbEntities.Location = new System.Drawing.Point(4, 43);
+            this.gbEntities.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbEntities.Name = "gbEntities";
-            this.gbEntities.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.gbEntities.Size = new System.Drawing.Size(583, 682);
+            this.gbEntities.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gbEntities.Size = new System.Drawing.Size(477, 551);
             this.gbEntities.TabIndex = 17;
             this.gbEntities.TabStop = false;
             this.gbEntities.Text = "Entities";
             // 
             // listViewEntities
             // 
-            this.listViewEntities.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewEntities.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
+            this.listViewEntities.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewEntities.FullRowSelect = true;
             this.listViewEntities.HideSelection = false;
-            this.listViewEntities.Location = new System.Drawing.Point(15, 34);
-            this.listViewEntities.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listViewEntities.Location = new System.Drawing.Point(4, 62);
             this.listViewEntities.Name = "listViewEntities";
-            this.listViewEntities.Size = new System.Drawing.Size(559, 638);
+            this.listViewEntities.Size = new System.Drawing.Size(469, 484);
             this.listViewEntities.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewEntities.TabIndex = 1;
             this.listViewEntities.UseCompatibleStateImageBehavior = false;
@@ -524,6 +512,40 @@
             this.columnHeader2.Text = "Logical Name";
             this.columnHeader2.Width = 130;
             // 
+            // pnlEntitiesTop
+            // 
+            this.pnlEntitiesTop.Controls.Add(this.llShowAllEntities);
+            this.pnlEntitiesTop.Controls.Add(this.llShowEmptyIcon);
+            this.pnlEntitiesTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlEntitiesTop.Location = new System.Drawing.Point(4, 24);
+            this.pnlEntitiesTop.Name = "pnlEntitiesTop";
+            this.pnlEntitiesTop.Size = new System.Drawing.Size(469, 38);
+            this.pnlEntitiesTop.TabIndex = 2;
+            // 
+            // llShowAllEntities
+            // 
+            this.llShowAllEntities.Dock = System.Windows.Forms.DockStyle.Right;
+            this.llShowAllEntities.Location = new System.Drawing.Point(-91, 0);
+            this.llShowAllEntities.Name = "llShowAllEntities";
+            this.llShowAllEntities.Size = new System.Drawing.Size(346, 38);
+            this.llShowAllEntities.TabIndex = 1;
+            this.llShowAllEntities.TabStop = true;
+            this.llShowAllEntities.Text = "Show all";
+            this.llShowAllEntities.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.llShowAllEntities.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llShowAllEntities_LinkClicked);
+            // 
+            // llShowEmptyIcon
+            // 
+            this.llShowEmptyIcon.Dock = System.Windows.Forms.DockStyle.Right;
+            this.llShowEmptyIcon.Location = new System.Drawing.Point(255, 0);
+            this.llShowEmptyIcon.Name = "llShowEmptyIcon";
+            this.llShowEmptyIcon.Size = new System.Drawing.Size(214, 38);
+            this.llShowEmptyIcon.TabIndex = 0;
+            this.llShowEmptyIcon.TabStop = true;
+            this.llShowEmptyIcon.Text = "Show entites without image";
+            this.llShowEmptyIcon.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.llShowEmptyIcon.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llShowEmptyIcon_LinkClicked);
+            // 
             // mainMenu
             // 
             this.mainMenu.AutoSize = false;
@@ -540,8 +562,7 @@
             this.tsbToggleBackground});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.mainMenu.Size = new System.Drawing.Size(1670, 46);
+            this.mainMenu.Size = new System.Drawing.Size(1350, 38);
             this.mainMenu.TabIndex = 16;
             this.mainMenu.Text = "tsMain";
             // 
@@ -551,14 +572,14 @@
             this.tsbCloseThisTab.Image = ((System.Drawing.Image)(resources.GetObject("tsbCloseThisTab.Image")));
             this.tsbCloseThisTab.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCloseThisTab.Name = "tsbCloseThisTab";
-            this.tsbCloseThisTab.Size = new System.Drawing.Size(32, 43);
+            this.tsbCloseThisTab.Size = new System.Drawing.Size(34, 33);
             this.tsbCloseThisTab.Text = "Close this tab";
             this.tsbCloseThisTab.Click += new System.EventHandler(this.TsbCloseThisTabClick);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 46);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 38);
             // 
             // tsbLoad
             // 
@@ -568,26 +589,26 @@
             this.tsbLoad.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoad.Image")));
             this.tsbLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLoad.Name = "tsbLoad";
-            this.tsbLoad.Size = new System.Drawing.Size(294, 43);
+            this.tsbLoad.Size = new System.Drawing.Size(252, 33);
             this.tsbLoad.Text = "Load Entities and Images";
             this.tsbLoad.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsbLoad_DropDownItemClicked);
             // 
             // loadAllToolStripMenuItem
             // 
             this.loadAllToolStripMenuItem.Name = "loadAllToolStripMenuItem";
-            this.loadAllToolStripMenuItem.Size = new System.Drawing.Size(300, 34);
+            this.loadAllToolStripMenuItem.Size = new System.Drawing.Size(284, 34);
             this.loadAllToolStripMenuItem.Text = "Load All";
             // 
             // loadFromASolutionToolStripMenuItem
             // 
             this.loadFromASolutionToolStripMenuItem.Name = "loadFromASolutionToolStripMenuItem";
-            this.loadFromASolutionToolStripMenuItem.Size = new System.Drawing.Size(300, 34);
+            this.loadFromASolutionToolStripMenuItem.Size = new System.Drawing.Size(284, 34);
             this.loadFromASolutionToolStripMenuItem.Text = "Load from solution(s)";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 46);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 38);
             // 
             // tsbAddIcon
             // 
@@ -595,7 +616,7 @@
             this.tsbAddIcon.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddIcon.Image")));
             this.tsbAddIcon.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAddIcon.Name = "tsbAddIcon";
-            this.tsbAddIcon.Size = new System.Drawing.Size(168, 43);
+            this.tsbAddIcon.Size = new System.Drawing.Size(147, 33);
             this.tsbAddIcon.Text = "Add Image(s)";
             this.tsbAddIcon.Click += new System.EventHandler(this.TsbAddIconClick);
             // 
@@ -605,14 +626,14 @@
             this.tsbOptimizeIcons.Image = ((System.Drawing.Image)(resources.GetObject("tsbOptimizeIcons.Image")));
             this.tsbOptimizeIcons.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOptimizeIcons.Name = "tsbOptimizeIcons";
-            this.tsbOptimizeIcons.Size = new System.Drawing.Size(262, 43);
+            this.tsbOptimizeIcons.Size = new System.Drawing.Size(228, 33);
             this.tsbOptimizeIcons.Text = "Optimize 32x32 Images";
             this.tsbOptimizeIcons.Click += new System.EventHandler(this.tsbOptimizeIcons_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 46);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 38);
             // 
             // tsbApply
             // 
@@ -620,14 +641,14 @@
             this.tsbApply.Image = ((System.Drawing.Image)(resources.GetObject("tsbApply.Image")));
             this.tsbApply.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbApply.Name = "tsbApply";
-            this.tsbApply.Size = new System.Drawing.Size(212, 43);
+            this.tsbApply.Size = new System.Drawing.Size(184, 33);
             this.tsbApply.Text = "Apply and Publish";
             this.tsbApply.Click += new System.EventHandler(this.TsbApplyClick);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 46);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 38);
             // 
             // tsbToggleBackground
             // 
@@ -635,7 +656,7 @@
             this.tsbToggleBackground.Image = ((System.Drawing.Image)(resources.GetObject("tsbToggleBackground.Image")));
             this.tsbToggleBackground.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbToggleBackground.Name = "tsbToggleBackground";
-            this.tsbToggleBackground.Size = new System.Drawing.Size(32, 43);
+            this.tsbToggleBackground.Size = new System.Drawing.Size(34, 33);
             this.tsbToggleBackground.Text = "Toggle Icons list background and text";
             this.tsbToggleBackground.Click += new System.EventHandler(this.tsbToggleBackground_Click);
             // 
@@ -649,15 +670,15 @@
             // 
             // Iconator
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.groupBoxCurrentIcon);
             this.Controls.Add(this.gbEntities);
             this.Controls.Add(this.mainMenu);
-            this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Iconator";
-            this.Size = new System.Drawing.Size(1670, 1108);
+            this.Size = new System.Drawing.Size(1350, 906);
             this.Load += new System.EventHandler(this.Iconator_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -677,6 +698,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox16)).EndInit();
             this.gbEntities.ResumeLayout(false);
+            this.pnlEntitiesTop.ResumeLayout(false);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.ResumeLayout(false);
@@ -735,5 +757,8 @@
         private System.Windows.Forms.ListView lvVectorWebresources;
         private System.Windows.Forms.Label lblVectorLabel;
         private System.Windows.Forms.PictureBox pbVector;
+        private System.Windows.Forms.Panel pnlEntitiesTop;
+        private System.Windows.Forms.LinkLabel llShowAllEntities;
+        private System.Windows.Forms.LinkLabel llShowEmptyIcon;
     }
 }

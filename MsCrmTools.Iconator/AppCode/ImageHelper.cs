@@ -3,12 +3,11 @@
 // CODEPLEX: http://xrmtoolbox.codeplex.com
 // BLOG: http://mscrmtools.blogspot.com
 
+using Svg;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Text;
-using Svg;
 
 namespace MsCrmTools.Iconator.AppCode
 {
@@ -28,27 +27,31 @@ namespace MsCrmTools.Iconator.AppCode
 
                 using (MemoryStream ms = new MemoryStream(imageBytes))
                 {
-                    using (StreamReader reader = new StreamReader(ms))
+                    if (isVector)
                     {
-                        if (isVector)
-                        {
-                            using (var xmlStream = new MemoryStream(Encoding.Default.GetBytes(reader.ReadToEnd())))
-                            {
-                                xmlStream.Position = 0;
-                                SvgDocument svgDoc = SvgDocument.Open<SvgDocument>(xmlStream);
+                        SvgDocument svgDoc = SvgDocument.Open<SvgDocument>(ms);
 
-                                return new Bitmap(svgDoc.Draw(48, 48), new Size(48, 48));
-                            }
-                        }
-
-                        return Image.FromStream(ms, true, true);
+                        return new Bitmap(svgDoc.Draw(48, 48), new Size(48, 48));
                     }
+
+                    return Image.FromStream(ms, true, true);
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception($"Error on ConvertWebResContent method : {ex.InnerException?.Message ?? ex.Message}");
             }
+        }
+
+        public static Bitmap GetCenteredImage(Image image, int width, int height)
+        {
+            Bitmap bmp = new Bitmap(width, height);
+            using (Graphics g2 = Graphics.FromImage(bmp))
+            {
+                g2.DrawImage(image, 2, 2);
+            }
+
+            return bmp;
         }
 
         /// <summary>
@@ -86,17 +89,6 @@ namespace MsCrmTools.Iconator.AppCode
             graphic.DrawImage(originalImage, 0, 0, newWidth, newHeight);
 
             return thumbnail;
-        }
-
-        public static Bitmap GetCenteredImage(Image image, int width, int height)
-        {
-            Bitmap bmp = new Bitmap(width, height);
-            using (Graphics g2 = Graphics.FromImage(bmp))
-            {
-                g2.DrawImage(image, 2, 2);
-            }
-
-            return bmp;
         }
     }
 }

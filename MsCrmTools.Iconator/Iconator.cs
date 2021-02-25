@@ -24,6 +24,7 @@ namespace MsCrmTools.Iconator
 
         private readonly List<Entity> webResourceRetrivedList;
 
+        private CrmComponents cc;
         private Color defaultColor;
 
         public string HelpUrl
@@ -116,6 +117,8 @@ namespace MsCrmTools.Iconator
                 {
                     tabControlWebResource.TabPages.Insert(2, tabPageVector);
                 }
+
+                tabControlWebResource.SelectedIndex = 2;
             }
 
             if (detail.OrganizationMajorVersion >= 6)
@@ -216,14 +219,6 @@ namespace MsCrmTools.Iconator
             }
         }
 
-        private void LvWebRessourcesSelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listViewWebRessources32.SelectedItems.Count > 0)
-            {
-                var webRessource = (Entity)listViewWebRessources32.SelectedItems[0].Tag;
-            }
-        }
-
         #endregion ListViewItems selection
 
         #region Main menu actions
@@ -253,7 +248,7 @@ namespace MsCrmTools.Iconator
                 AsyncArgument = solutionIds,
                 Work = (bw, e) =>
                 {
-                    var cc = new CrmComponents();
+                    cc = new CrmComponents();
 
                     // Display retrieved entities
                     var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionIds, ConnectionDetail.OrganizationMajorVersion, ConnectionDetail.OrganizationMinorVersion)
@@ -625,6 +620,7 @@ namespace MsCrmTools.Iconator
         {
             if (listViewWebRessources16.SelectedItems.Count > 0
                 || listViewWebRessources32.SelectedItems.Count > 0
+                || lvVectorWebresources.SelectedItems.Count > 0
                 || listViewWebRessourcesOther.SelectedItems.Count > 0)
             {
                 BtnMapClick(null, null);
@@ -813,6 +809,22 @@ namespace MsCrmTools.Iconator
             var list = (ListView)sender;
             list.Sorting = list.Sorting == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
             list.ListViewItemSorter = new ListViewItemComparer(e.Column, list.Sorting);
+        }
+
+        private void llShowAllEntities_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            listViewEntities.Items.Clear();
+            listViewEntities.Items.AddRange(cc.Entities.ToArray());
+        }
+
+        private void llShowEmptyIcon_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            listViewEntities.Items.Clear();
+            listViewEntities.Items.AddRange(cc.Entities.Where(lvi =>
+                ((EntityMetadata)lvi.Tag).IconVectorName == null
+                && ((EntityMetadata)lvi.Tag).IconLargeName == null
+                && ((EntityMetadata)lvi.Tag).IconSmallName == null
+            ).ToArray());
         }
 
         private void TsbCloseThisTabClick(object sender, EventArgs e)
