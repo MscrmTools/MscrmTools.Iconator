@@ -101,9 +101,9 @@ namespace MsCrmTools.Iconator
                         {
                             Conditions =
                             {
-                                new MetadataConditionExpression("MetadataId", MetadataConditionOperator.In,
-                                    list.ToArray()),
-                                new MetadataConditionExpression("IsCustomEntity", MetadataConditionOperator.Equals, true)
+                                new MetadataConditionExpression("MetadataId", MetadataConditionOperator.In, list.ToArray()),
+                                new MetadataConditionExpression("IsCustomEntity", MetadataConditionOperator.Equals, true),
+                                new MetadataConditionExpression("IsIntersect", MetadataConditionOperator.Equals, false)
                             }
                         },
                         Properties = new MetadataPropertiesExpression
@@ -149,7 +149,8 @@ namespace MsCrmTools.Iconator
                 {
                     Conditions =
                             {
-                                new MetadataConditionExpression("IsCustomEntity", MetadataConditionOperator.Equals, true)
+                                new MetadataConditionExpression("IsCustomEntity", MetadataConditionOperator.Equals, true),
+                                new MetadataConditionExpression("IsIntersect", MetadataConditionOperator.Equals, false)
                             }
                 },
                 Properties = new MetadataPropertiesExpression

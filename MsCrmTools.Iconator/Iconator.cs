@@ -253,12 +253,12 @@ namespace MsCrmTools.Iconator
 
                     // Display retrieved entities
                     var queryEntities = from entityList in MetadataManager.GetEntitiesList(Service, solutionIds, ConnectionDetail.OrganizationMajorVersion, ConnectionDetail.OrganizationMinorVersion)
-                                        orderby entityList.DisplayName.UserLocalizedLabel.Label
+                                        orderby (entityList.DisplayName?.UserLocalizedLabel?.Label ?? "N/A")
                                         select entityList;
 
                     foreach (var entity in queryEntities)
                     {
-                        var lvi = new ListViewItem(entity.DisplayName.UserLocalizedLabel.Label) { Tag = entity };
+                        var lvi = new ListViewItem(entity.DisplayName?.UserLocalizedLabel?.Label ?? "N/A") { Tag = entity };
                         lvi.SubItems.Add(entity.LogicalName);
                         cc.Entities.Add(lvi);
                     }
