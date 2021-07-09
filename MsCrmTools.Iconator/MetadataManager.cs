@@ -49,6 +49,20 @@ namespace MsCrmTools.Iconator
             service.Execute(publishRequest);
         }
 
+        public static void CleanOldIcons(EntityMetadata emd, List<string> imageList, IOrganizationService service)
+        {
+            if (!string.IsNullOrEmpty(emd.IconSmallName) && !imageList.Contains(emd.IconSmallName)) imageList.Add(emd.IconSmallName);
+            if (!string.IsNullOrEmpty(emd.IconMediumName) && !imageList.Contains(emd.IconMediumName)) imageList.Add(emd.IconMediumName);
+            if (!string.IsNullOrEmpty(emd.IconLargeName) && !imageList.Contains(emd.IconLargeName)) imageList.Add(emd.IconLargeName);
+
+            emd.IconSmallName = "";
+            emd.IconMediumName = "";
+            emd.IconLargeName = "";
+
+            var request = new UpdateEntityRequest { Entity = emd };
+            service.Execute(request);
+        }
+
         /// <summary>
         /// Recupere la liste des EntityMetadata presente dans la CRM
         /// </summary>

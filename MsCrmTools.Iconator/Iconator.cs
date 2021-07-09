@@ -6,6 +6,7 @@
 using McTools.Xrm.Connection;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk.Query;
 using MsCrmTools.Iconator.AppCode;
 using System;
 using System.Collections.Generic;
@@ -281,6 +282,7 @@ namespace MsCrmTools.Iconator
 
                                 var lvi = new ListViewItem(webResource.GetAttributeValue<string>("name"))
                                 {
+                                    Name = webResource.GetAttributeValue<string>("name"),
                                     Tag = webResource,
                                     ImageIndex = cc.ImagesVector.Count
                                 };
@@ -302,6 +304,7 @@ namespace MsCrmTools.Iconator
                             {
                                 var lvi = new ListViewItem(webResource.GetAttributeValue<string>("name"))
                                 {
+                                    Name = webResource.GetAttributeValue<string>("name"),
                                     Tag = webResource,
                                     ImageIndex = cc.Images32.Count
                                 };
@@ -312,6 +315,7 @@ namespace MsCrmTools.Iconator
                             {
                                 var lvi = new ListViewItem(webResource.GetAttributeValue<string>("name"))
                                 {
+                                    Name = webResource.GetAttributeValue<string>("name"),
                                     Tag = webResource,
                                     ImageIndex = cc.Images16.Count
                                 };
@@ -327,6 +331,7 @@ namespace MsCrmTools.Iconator
                                 };
                                 var lvi = new ListViewItem(webResource.GetAttributeValue<string>("name"))
                                 {
+                                    Name = webResource.GetAttributeValue<string>("name"),
                                     Tag = listWrImage,
                                     ImageIndex = cc.ImagesOthers.Count,
                                 };
@@ -408,6 +413,7 @@ namespace MsCrmTools.Iconator
                     }
                     tsbAddIcon.Enabled = true;
                     tsbApply.Enabled = true;
+                    tsbCleanOldImages.Enabled = true;
 
                     SetEnableState(true);
                 },
@@ -436,6 +442,7 @@ namespace MsCrmTools.Iconator
 
                         var lvi = new ListViewItem(webResource.GetAttributeValue<string>("name"))
                         {
+                            Name = webResource.GetAttributeValue<string>("name"),
                             Tag = webResource,
                             ImageIndex = imageListVector.Images.Count
                         };
@@ -453,6 +460,7 @@ namespace MsCrmTools.Iconator
                     {
                         var lvi = new ListViewItem(webResource.Attributes["name"].ToString())
                         {
+                            Name = webResource.GetAttributeValue<string>("name"),
                             Tag = webResource,
                             ImageIndex = imageList32.Images.Count
                         };
@@ -463,6 +471,7 @@ namespace MsCrmTools.Iconator
                     {
                         var lvi = new ListViewItem(webResource.Attributes["name"].ToString())
                         {
+                            Name = webResource.GetAttributeValue<string>("name"),
                             Tag = webResource,
                             ImageIndex = imageList16.Images.Count
                         };
@@ -478,6 +487,7 @@ namespace MsCrmTools.Iconator
                         };
                         var lvi = new ListViewItem(webResource.Attributes["name"].ToString())
                         {
+                            Name = webResource.GetAttributeValue<string>("name"),
                             Tag = listWrImage,
                             ImageIndex = imageListOther.Images.Count,
                         };
@@ -804,6 +814,16 @@ namespace MsCrmTools.Iconator
 
         #endregion Others
 
+        private void CleanImagesListviews(List<string> imageList, List<string> imageList2)
+        {
+            var toRemove = imageList.Except(imageList2);
+            foreach (var img in toRemove)
+            {
+                listViewWebRessources16.Items.RemoveByKey(img);
+                listViewWebRessources32.Items.RemoveByKey(img);
+            }
+        }
+
         private void listViewEntities_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             var list = (ListView)sender;
@@ -825,6 +845,104 @@ namespace MsCrmTools.Iconator
                 && ((EntityMetadata)lvi.Tag).IconLargeName == null
                 && ((EntityMetadata)lvi.Tag).IconSmallName == null
             ).ToArray());
+        }
+
+        private void tsbCleanOldImages_Click(object sender, EventArgs e)
+        {
+            var entities = listViewEntities.CheckedItems.Cast<ListViewItem>().ToList();
+            if (entities.Count == 0)
+            {
+                MessageBox.Show(this, @"Please check at least one entity", @"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var emds = entities.Select(i => (EntityMetadata)i.Tag).ToList();
+
+            if (DialogResult.No == MessageBox.Show(this, $@"Are you sure you want to clean old images for {emds.Count} entities?", @"Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                return;
+            }
+
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = "Cleaning entities...",
+                Work = (bw, evt) =>
+                {
+                    var imageList = new List<string>();
+
+                    foreach (var emd in emds)
+                    {
+                        MetadataManager.CleanOldIcons(emd, imageList, Service);
+                    }
+
+                    evt.Result = imageList;
+                },
+                PostWorkCallBack = evt =>
+                {
+                    if (evt.Error != null)
+                    {
+                        MessageBox.Show(this, $@"An error occured when cleaning entities: {evt.Error.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    var imageList = (List<string>)evt.Result;
+                    var originalImageList = new string[imageList.Count];
+                    imageList.CopyTo(originalImageList);
+                    if (imageList.Any())
+                    {
+                        var result = MessageBox.Show(this, $@"{imageList.Count} image(s) have been cleaned from entities. Would you like to delete these images?", @"Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.No) return;
+
+                        WorkAsync(new WorkAsyncInfo
+                        {
+                            Message = "Deleting images...",
+                            Work = (bw, evt2) =>
+                            {
+                                var wrs = Service.RetrieveMultiple(new QueryExpression("webresource")
+                                {
+                                    NoLock = true,
+                                    ColumnSet = new ColumnSet("name"),
+                                    Criteria = new FilterExpression
+                                    {
+                                        Conditions =
+                                        {
+                                            new ConditionExpression("name", ConditionOperator.In, imageList.ToArray())
+                                        }
+                                    }
+                                }).Entities;
+
+                                foreach (var wr in wrs)
+                                {
+                                    try
+                                    {
+                                        Service.Delete(wr.LogicalName, wr.Id);
+                                        imageList.Remove(wr.GetAttributeValue<string>("name"));
+                                    }
+                                    catch { }
+                                }
+
+                                evt2.Result = imageList;
+                            },
+                            PostWorkCallBack = evt2 =>
+                            {
+                                if (evt2.Error != null)
+                                {
+                                    MessageBox.Show(this, $@"An error occured when deleting images: {evt2.Error.Message}", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+
+                                var imageList2 = (List<string>)evt2.Result;
+                                if (imageList2.Any())
+                                {
+                                    MessageBox.Show(this, $"The following images where not deleted:\n{string.Join("\n", imageList2)}", @"Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                }
+
+                                CleanImagesListviews(originalImageList.ToList(), imageList2);
+                            }
+                        });
+                    }
+                }
+            });
         }
 
         private void TsbCloseThisTabClick(object sender, EventArgs e)

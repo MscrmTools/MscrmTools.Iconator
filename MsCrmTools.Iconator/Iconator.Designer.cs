@@ -83,6 +83,7 @@
             this.tsbToggleBackground = new System.Windows.Forms.ToolStripButton();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog = new System.Windows.Forms.ColorDialog();
+            this.tsbCleanOldImages = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -294,7 +295,7 @@
             this.gbMapping.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbMapping.Name = "gbMapping";
             this.gbMapping.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbMapping.Size = new System.Drawing.Size(848, 331);
+            this.gbMapping.Size = new System.Drawing.Size(848, 329);
             this.gbMapping.TabIndex = 8;
             this.gbMapping.TabStop = false;
             this.gbMapping.Text = "Mapping";
@@ -314,7 +315,7 @@
             this.lvMappings.Location = new System.Drawing.Point(8, 28);
             this.lvMappings.MultiSelect = false;
             this.lvMappings.Name = "lvMappings";
-            this.lvMappings.Size = new System.Drawing.Size(824, 300);
+            this.lvMappings.Size = new System.Drawing.Size(824, 298);
             this.lvMappings.TabIndex = 3;
             this.lvMappings.UseCompatibleStateImageBehavior = false;
             this.lvMappings.View = System.Windows.Forms.View.Details;
@@ -486,6 +487,7 @@
             // 
             // listViewEntities
             // 
+            this.listViewEntities.CheckBoxes = true;
             this.listViewEntities.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
@@ -556,6 +558,7 @@
             this.toolStripSeparator1,
             this.tsbAddIcon,
             this.tsbOptimizeIcons,
+            this.tsbCleanOldImages,
             this.toolStripSeparator2,
             this.tsbApply,
             this.toolStripSeparator4,
@@ -668,6 +671,16 @@
             this.imageList1.Images.SetKeyName(1, "IconDefault32.png");
             this.imageList1.Images.SetKeyName(2, "icon.png");
             // 
+            // tsbCleanOldImages
+            // 
+            this.tsbCleanOldImages.Image = global::MsCrmTools.Iconator.Properties.Resources.draw_eraser;
+            this.tsbCleanOldImages.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCleanOldImages.Name = "tsbCleanOldImages";
+            this.tsbCleanOldImages.Size = new System.Drawing.Size(168, 33);
+            this.tsbCleanOldImages.Text = "Clean old images";
+            this.tsbCleanOldImages.Enabled = false;
+            this.tsbCleanOldImages.Click += new System.EventHandler(this.tsbCleanOldImages_Click);
+            // 
             // Iconator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -760,5 +773,6 @@
         private System.Windows.Forms.Panel pnlEntitiesTop;
         private System.Windows.Forms.LinkLabel llShowAllEntities;
         private System.Windows.Forms.LinkLabel llShowEmptyIcon;
+        private System.Windows.Forms.ToolStripButton tsbCleanOldImages;
     }
 }

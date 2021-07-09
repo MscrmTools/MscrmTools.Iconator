@@ -80,7 +80,7 @@ namespace MsCrmTools.Iconator
                 var bWorker = new BackgroundWorker();
                 bWorker.RunWorkerCompleted += BWorkerRunWorkerCompleted;
                 bWorker.DoWork += BWorkerDoWork;
-                bWorker.RunWorkerAsync();
+                bWorker.RunWorkerAsync(cbbSolutions.SelectedItem?.ToString());
             }
         }
 
@@ -151,12 +151,12 @@ namespace MsCrmTools.Iconator
                     webR.Id = wrId;
                 }
 
-                if (!CheckBoxDelegates.IsChecked(chkAddToDefaultSolution))
+                if (!CheckBoxDelegates.IsChecked(chkAddToDefaultSolution) && e.Argument != null)
                 {
                     var request = new AddSolutionComponentRequest
                     {
                         ComponentType = 61,
-                        SolutionUniqueName = cbbSolutions.SelectedItem.ToString(),
+                        SolutionUniqueName = e.Argument.ToString(),
                         ComponentId = webR.Id
                     };
 
