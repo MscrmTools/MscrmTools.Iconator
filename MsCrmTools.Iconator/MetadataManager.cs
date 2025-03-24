@@ -156,7 +156,7 @@ namespace MsCrmTools.Iconator
                 Properties = new MetadataPropertiesExpression
                 {
                     AllProperties = false,
-                    PropertyNames = { "DisplayName", "LogicalName", "IconSmallName", "IconMediumName" }
+                    PropertyNames = { "DisplayName", "LogicalName", "IconSmallName", "IconMediumName", "DataProviderId", "DataSourceId" }
                 }
             };
 
