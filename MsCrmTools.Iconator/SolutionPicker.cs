@@ -14,11 +14,15 @@ namespace MsCrmTools.Iconator
     {
         private readonly IOrganizationService innerService;
 
-        public SolutionPicker(IOrganizationService service)
+        public SolutionPicker(IOrganizationService service, bool isForAddingComponents = false)
         {
             InitializeComponent();
 
             innerService = service;
+
+            lstSolutions.MultiSelect = !isForAddingComponents;
+            lblHeader.Text = isForAddingComponents ? "Select one solution" : "Select one or multiple solutions";
+            lblDesc.Text = isForAddingComponents ? "Select the solution where you want to add the images" : "Tables and Images from these solutions will be loaded";
         }
 
         public List<Entity> SelectedSolutions { get; set; }
@@ -67,6 +71,15 @@ namespace MsCrmTools.Iconator
                 qe.Criteria.AddCondition(new ConditionExpression("ismanaged", ConditionOperator.Equal, false));
                 qe.Criteria.AddCondition(new ConditionExpression("isvisible", ConditionOperator.Equal, true));
                 qe.Criteria.AddCondition(new ConditionExpression("uniquename", ConditionOperator.NotEqual, "Default"));
+                qe.LinkEntities.Add(new LinkEntity
+                {
+                    LinkFromEntityName = "solution",
+                    LinkFromAttributeName = "publisherid",
+                    LinkToAttributeName = "publisherid",
+                    LinkToEntityName = "publisher",
+                    EntityAlias = "publisher",
+                    Columns = new ColumnSet("customizationprefix")
+                });
 
                 return innerService.RetrieveMultiple(qe);
             }

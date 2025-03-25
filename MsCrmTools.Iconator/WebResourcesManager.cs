@@ -22,6 +22,17 @@ namespace MsCrmTools.Iconator
         /// <returns>Liste des web resources retrouvees</returns>
         public static EntityCollection GetWebResourcesOnSolution(IOrganizationService service, List<Guid> solutionIds)
         {
+            return GetWebResourcesOnSolution(service, solutionIds, new int[] { 5, 6, 7, 11 });
+        }
+
+        /// <summary>
+        /// Recupere la liste des web resources d'un solution ciblee
+        /// </summary>
+        /// <param name="service">CRM Service</param>
+        /// <param name="solutionIds">Identifiant unique de la solution à partir de laquelle retrouver les images</param>
+        /// <returns>Liste des web resources retrouvees</returns>
+        public static EntityCollection GetWebResourcesOnSolution(IOrganizationService service, List<Guid> solutionIds, int[] imageTypes)
+        {
             if (solutionIds.Count == 0)
             {
                 var queryWr = new QueryExpression
@@ -32,7 +43,7 @@ namespace MsCrmTools.Iconator
                     {
                         Conditions =
                         {
-                            new ConditionExpression("webresourcetype", ConditionOperator.In, 5, 6, 7, 11),
+                            new ConditionExpression("webresourcetype", ConditionOperator.In, imageTypes),
                             new ConditionExpression("ishidden", ConditionOperator.Equal, false)
                         }
                     }
@@ -77,7 +88,7 @@ namespace MsCrmTools.Iconator
                                 {
                                     new ConditionExpression("ishidden", ConditionOperator.Equal, false),
                                     new ConditionExpression("webresourceid", ConditionOperator.In, list.ToArray()),
-                                    new ConditionExpression("webresourcetype", ConditionOperator.In, 5, 6, 7, 11)
+                                    new ConditionExpression("webresourcetype", ConditionOperator.In, imageTypes)
                                 }
                             },
                             new FilterExpression

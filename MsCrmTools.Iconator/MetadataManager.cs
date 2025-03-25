@@ -113,6 +113,7 @@ namespace MsCrmTools.Iconator
                             {
                                 "DisplayName",
                                 "LogicalName",
+                                "SchemaName",
                                 "IconSmallName",
                                 "IconMediumName"
                             }

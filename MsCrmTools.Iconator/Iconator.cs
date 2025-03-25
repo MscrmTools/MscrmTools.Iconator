@@ -1004,5 +1004,16 @@ namespace MsCrmTools.Iconator
                 ? Color.White
                 : Color.FromName("WindowText");
         }
+
+        private void tsbUseNewVersion_Click(object sender, EventArgs e)
+        {
+            if (SettingsManager.Instance.TryLoad(typeof(Iconator), out Settings settings))
+            {
+                settings.UseLegacyIconator = false;
+                settings.Save();
+
+                MessageBox.Show(this, "Please close and reopen the tool to use the new version of Iconator", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }

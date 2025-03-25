@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using MsCrmTools.Iconator.UserControls;
+using System.ComponentModel.Composition;
 using XrmToolBox.Extensibility;
 using XrmToolBox.Extensibility.Interfaces;
 
@@ -12,11 +13,23 @@ namespace MsCrmTools.Iconator
        ExportMetadata("BackgroundColor", "Lavender"),
        ExportMetadata("PrimaryFontColor", "Black"),
        ExportMetadata("SecondaryFontColor", "Gray")]
-    public class Plugin : PluginBase
+    public class Plugin : PluginBase, IPayPalPlugin
     {
+        public string DonationDescription => "Donation for Iconator";
+
+        public string EmailAccount => "tanguy92@hotmail.com";
+
         public override IXrmToolBoxPluginControl GetControl()
         {
-            return new Iconator();
+            if (SettingsManager.Instance.TryLoad(typeof(Iconator), out AppCode.Settings settings))
+            {
+                if (settings.UseLegacyIconator)
+                {
+                    return new Iconator();
+                }
+            }
+
+            return new NewIconatorControl();
         }
     }
 }
