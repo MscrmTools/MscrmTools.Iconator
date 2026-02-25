@@ -256,6 +256,7 @@ namespace MsCrmTools.Iconator.UserControls
         private void ImageListForm_SelectedItemsChanged(object sender, EventArgs e)
         {
             tsbDeleteImages.Enabled = imageListForm.SelectedImages.Count > 0;
+            tsbMap.Enabled = tableListForm.SelectedTables.Count > 0 && imageListForm.SelectedImages.Count == 1;
         }
 
         private void SetState(bool isRunning)
@@ -329,6 +330,7 @@ namespace MsCrmTools.Iconator.UserControls
             tsbApplyImages.Enabled = tableListForm.PendingTables.Count > 0;
             tsbRemoveImage.Enabled = tableListForm.SelectedTables.Any(t => !string.IsNullOrEmpty(t.WebResourceName));
             tsbRemovePendingAssociation.Enabled = tableListForm.SelectedTables.Any(t => t.IsPending);
+            tsbMap.Enabled = tableListForm.SelectedTables.Count > 0 && imageListForm.SelectedImages.Count == 1;
         }
 
         private void tsbAddImages_Click(object sender, EventArgs e)
@@ -419,6 +421,26 @@ namespace MsCrmTools.Iconator.UserControls
         private void tsbLoad_Click(object sender, EventArgs e)
         {
             ExecuteMethod(DoAction, true);
+        }
+
+        private void tsbMap_Click(object sender, EventArgs e)
+        {
+            var tables = tableListForm.SelectedTables;
+            var images = imageListForm.SelectedImages;
+
+            if (images.Count == 0)
+            {
+                MessageBox.Show(this, "Please select one image to apply", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (images.Count > 1)
+            {
+                MessageBox.Show(this, "Please select only one image to apply", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            tableListForm.MapIcon(images.FirstOrDefault());
         }
 
         private void tsbRemoveImage_Click(object sender, EventArgs e)

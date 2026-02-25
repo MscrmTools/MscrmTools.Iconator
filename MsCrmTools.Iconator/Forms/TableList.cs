@@ -49,6 +49,20 @@ namespace MsCrmTools.Iconator.Forms
             }));
         }
 
+        public void MapIcon(VectorImageInfo imageInfo)
+        {
+            if (lvTables.SelectedItems.Count == 0) return;
+
+            foreach (ListViewItem item in lvTables.SelectedItems)
+            {
+                var tableInfo = (TableInfo)item.Tag;
+                tableInfo.SetPendingVectorIcon(imageInfo.Name, imageInfo.Image);
+            }
+
+            lvTables.Invalidate();
+            SelectedItemsChanged?.Invoke(this, new EventArgs());
+        }
+
         public void RefreshDisplay()
         {
             lvTables.Invalidate();

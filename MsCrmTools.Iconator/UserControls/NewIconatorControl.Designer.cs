@@ -29,15 +29,17 @@
         private void InitializeComponent()
         {
             this.tsMain = new System.Windows.Forms.ToolStrip();
-            this.tsbLoad = new System.Windows.Forms.ToolStripButton();
             this.tssTables = new System.Windows.Forms.ToolStripSeparator();
+            this.tssImages = new System.Windows.Forms.ToolStripSeparator();
+            this.dpMain = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.tssMap = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbLoad = new System.Windows.Forms.ToolStripButton();
+            this.tsbMap = new System.Windows.Forms.ToolStripButton();
             this.tsbApplyImages = new System.Windows.Forms.ToolStripButton();
             this.tsbRemovePendingAssociation = new System.Windows.Forms.ToolStripButton();
             this.tsbRemoveImage = new System.Windows.Forms.ToolStripButton();
-            this.tssImages = new System.Windows.Forms.ToolStripSeparator();
             this.tsbAddImages = new System.Windows.Forms.ToolStripButton();
             this.tsbDeleteImages = new System.Windows.Forms.ToolStripButton();
-            this.dpMain = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.tsMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,6 +49,8 @@
             this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbLoad,
             this.tssTables,
+            this.tsbMap,
+            this.tssMap,
             this.tsbApplyImages,
             this.tsbRemovePendingAssociation,
             this.tsbRemoveImage,
@@ -55,24 +59,56 @@
             this.tsbDeleteImages});
             this.tsMain.Location = new System.Drawing.Point(0, 0);
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(1812, 41);
+            this.tsMain.Size = new System.Drawing.Size(1611, 39);
             this.tsMain.TabIndex = 0;
             this.tsMain.Text = "toolStrip1";
+            // 
+            // tssTables
+            // 
+            this.tssTables.Name = "tssTables";
+            this.tssTables.Size = new System.Drawing.Size(6, 39);
+            // 
+            // tssImages
+            // 
+            this.tssImages.Name = "tssImages";
+            this.tssImages.Size = new System.Drawing.Size(6, 39);
+            // 
+            // dpMain
+            // 
+            this.dpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dpMain.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
+            this.dpMain.Location = new System.Drawing.Point(0, 39);
+            this.dpMain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dpMain.Name = "dpMain";
+            this.dpMain.Size = new System.Drawing.Size(1611, 929);
+            this.dpMain.TabIndex = 1;
+            // 
+            // tssMap
+            // 
+            this.tssMap.Name = "tssMap";
+            this.tssMap.Size = new System.Drawing.Size(6, 39);
             // 
             // tsbLoad
             // 
             this.tsbLoad.Image = global::MsCrmTools.Iconator.Properties.Resources.Dataverse_32x32;
             this.tsbLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLoad.Name = "tsbLoad";
-            this.tsbLoad.Size = new System.Drawing.Size(87, 36);
+            this.tsbLoad.Size = new System.Drawing.Size(78, 36);
             this.tsbLoad.Text = "Load";
             this.tsbLoad.ToolTipText = "Load tables and vector images from your Dataverse environment";
             this.tsbLoad.Click += new System.EventHandler(this.tsbLoad_Click);
             // 
-            // tssTables
+            // tsbMap
             // 
-            this.tssTables.Name = "tssTables";
-            this.tssTables.Size = new System.Drawing.Size(6, 41);
+            this.tsbMap.Enabled = false;
+            this.tsbMap.Image = global::MsCrmTools.Iconator.Properties.Resources.link;
+            this.tsbMap.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbMap.Name = "tsbMap";
+            this.tsbMap.Size = new System.Drawing.Size(75, 36);
+            this.tsbMap.Text = "Map";
+            this.tsbMap.ToolTipText = "Map a selected vector web resource with selected tables. \r\n\r\nYou can also drag an" +
+    "d drop a vector web resource on a table";
+            this.tsbMap.Click += new System.EventHandler(this.tsbMap_Click);
             // 
             // tsbApplyImages
             // 
@@ -80,7 +116,7 @@
             this.tsbApplyImages.Image = global::MsCrmTools.Iconator.Properties.Resources.Startup32;
             this.tsbApplyImages.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbApplyImages.Name = "tsbApplyImages";
-            this.tsbApplyImages.Size = new System.Drawing.Size(95, 36);
+            this.tsbApplyImages.Size = new System.Drawing.Size(84, 36);
             this.tsbApplyImages.Text = "Apply";
             this.tsbApplyImages.ToolTipText = "Apply pending changes to your Dataverse environment";
             this.tsbApplyImages.Click += new System.EventHandler(this.tsbApplyImages_Click);
@@ -91,7 +127,7 @@
             this.tsbRemovePendingAssociation.Image = global::MsCrmTools.Iconator.Properties.Resources.Eraser32;
             this.tsbRemovePendingAssociation.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRemovePendingAssociation.Name = "tsbRemovePendingAssociation";
-            this.tsbRemovePendingAssociation.Size = new System.Drawing.Size(237, 36);
+            this.tsbRemovePendingAssociation.Size = new System.Drawing.Size(204, 36);
             this.tsbRemovePendingAssociation.Text = "Remove pending image";
             this.tsbRemovePendingAssociation.ToolTipText = "Remove pending image for the selected table(s)";
             this.tsbRemovePendingAssociation.Click += new System.EventHandler(this.tsbRemovePendingAssociation_Click);
@@ -102,15 +138,10 @@
             this.tsbRemoveImage.Image = global::MsCrmTools.Iconator.Properties.Resources.No32;
             this.tsbRemoveImage.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRemoveImage.Name = "tsbRemoveImage";
-            this.tsbRemoveImage.Size = new System.Drawing.Size(166, 36);
+            this.tsbRemoveImage.Size = new System.Drawing.Size(145, 36);
             this.tsbRemoveImage.Text = "Remove image";
             this.tsbRemoveImage.ToolTipText = "Remove image for the selected table in your Dataverse environment";
             this.tsbRemoveImage.Click += new System.EventHandler(this.tsbRemoveImage_Click);
-            // 
-            // tssImages
-            // 
-            this.tssImages.Name = "tssImages";
-            this.tssImages.Size = new System.Drawing.Size(6, 41);
             // 
             // tsbAddImages
             // 
@@ -118,7 +149,7 @@
             this.tsbAddImages.Image = global::MsCrmTools.Iconator.Properties.Resources.NewToInstall;
             this.tsbAddImages.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAddImages.Name = "tsbAddImages";
-            this.tsbAddImages.Size = new System.Drawing.Size(155, 36);
+            this.tsbAddImages.Size = new System.Drawing.Size(135, 36);
             this.tsbAddImages.Text = "Add Image(s)";
             this.tsbAddImages.ToolTipText = "Add Image(s) to your Dataverse environment.\r\n\r\nYou can also directly drag and dro" +
     "p files from your drive to the list of images";
@@ -130,29 +161,21 @@
             this.tsbDeleteImages.Image = global::MsCrmTools.Iconator.Properties.Resources.delete;
             this.tsbDeleteImages.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDeleteImages.Name = "tsbDeleteImages";
-            this.tsbDeleteImages.Size = new System.Drawing.Size(171, 36);
+            this.tsbDeleteImages.Size = new System.Drawing.Size(151, 36);
             this.tsbDeleteImages.Text = "Delete Image(s)";
             this.tsbDeleteImages.ToolTipText = "Delete Image(s) from your Dataverse environment.\r\n\r\nIf the image still has depend" +
     "encies, the deletion will fail";
             this.tsbDeleteImages.Click += new System.EventHandler(this.tsbDeleteImages_Click);
             // 
-            // dpMain
-            // 
-            this.dpMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dpMain.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
-            this.dpMain.Location = new System.Drawing.Point(0, 41);
-            this.dpMain.Name = "dpMain";
-            this.dpMain.Size = new System.Drawing.Size(1812, 1169);
-            this.dpMain.TabIndex = 1;
-            // 
             // NewIconatorControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dpMain);
             this.Controls.Add(this.tsMain);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "NewIconatorControl";
-            this.Size = new System.Drawing.Size(1812, 1210);
+            this.Size = new System.Drawing.Size(1611, 968);
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
             this.ResumeLayout(false);
@@ -172,5 +195,7 @@
         private System.Windows.Forms.ToolStripButton tsbAddImages;
         private System.Windows.Forms.ToolStripButton tsbRemovePendingAssociation;
         private System.Windows.Forms.ToolStripButton tsbDeleteImages;
+        private System.Windows.Forms.ToolStripButton tsbMap;
+        private System.Windows.Forms.ToolStripSeparator tssMap;
     }
 }
